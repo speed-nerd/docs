@@ -1,0 +1,74 @@
+site_name: SnerdMQ Documentation
+site_url: https://speed-nerd.github.io/docs
+site_description: The AI polyglot background job queue — zero Redis, zero RabbitMQ, zero config.
+repo_url: https://github.com/speed-nerd
+repo_name: speed-nerd
+
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: black
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Features:
+    - Retries & Dead Letter Queue: features/retries-and-dlq.md
+    - Rate Limiting: features/rate-limiting.md
+    - Cron Scheduling: features/cron-scheduling.md
+    - Webhooks: features/webhooks.md
+    - Deduplication: features/deduplication.md
+    - Priority Queue: features/priority-queue.md
+  - SDKs:
+    - Node.js / TypeScript: sdks/node.md
+    - Python: sdks/python.md
+    - Go: sdks/go.md
+    - Ruby: sdks/ruby.md
+    - PHP: sdks/php.md
+    - Java / Kotlin: sdks/java.md
+    - C# / .NET: sdks/dotnet.md
+  - Embedded Libraries:
+    - snerd-go (Go): embedded/snerd-go.md
+    - snerd-rust (Rust): embedded/snerd-rust.md
+  - Production:
+    - Deployment: production/deployment.md
+    - Monitoring: production/monitoring.md
+    - Troubleshooting: production/troubleshooting.md
