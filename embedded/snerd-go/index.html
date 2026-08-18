@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://speed-nerd.github.io/docs/sdks/php/">
+        <link rel="canonical" href="https://speed-nerd.github.io/docs/embedded/snerd-go/">
       
       
-        <link rel="prev" href="../ruby/">
+        <link rel="prev" href="../../sdks/dotnet/">
       
       
-        <link rel="next" href="../java/">
+        <link rel="next" href="../snerd-rust/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>PHP - SnerdMQ Documentation</title>
+        <title>snerd-go (Go) - SnerdMQ Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#php-sdk" class="md-skip">
+        <a href="#snerd-go-embedded-go-library" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PHP
+              snerd-go (Go)
             
           </span>
         </div>
@@ -569,8 +569,6 @@
       
   
   
-    
-  
   
   
     
@@ -583,11 +581,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -608,7 +608,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -626,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../node/" class="md-nav__link">
+      <a href="../../sdks/node/" class="md-nav__link">
         
   
   
@@ -654,7 +654,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../python/" class="md-nav__link">
+      <a href="../../sdks/python/" class="md-nav__link">
         
   
   
@@ -682,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../go/" class="md-nav__link">
+      <a href="../../sdks/go/" class="md-nav__link">
         
   
   
@@ -710,7 +710,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ruby/" class="md-nav__link">
+      <a href="../../sdks/ruby/" class="md-nav__link">
         
   
   
@@ -735,37 +735,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PHP
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../sdks/php/" class="md-nav__link">
         
   
   
@@ -781,164 +754,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quickstart" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quickstart
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API Reference
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="API Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#new-snerdqueuestoragepath-null" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        new SnerdQueue(storagePath = null)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#queue-registerhandlertasktype-callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        $queue-&gt;registerHandler($taskType, $callback)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#queue-enqueue" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        $queue-&gt;enqueue(...)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#queue-registermaxretryhandlertasktype-callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        $queue-&gt;registerMaxRetryHandler($taskType, $callback)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#queue-startdashboardport" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        $queue-&gt;startDashboard($port)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#queue-yieldprogressmessage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        $queue-&gt;yieldProgress($message)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hard-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hard Timeouts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dashboard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dashboard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#distributed-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Distributed Scaling
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -951,7 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../java/" class="md-nav__link">
+      <a href="../../sdks/java/" class="md-nav__link">
         
   
   
@@ -979,7 +794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dotnet/" class="md-nav__link">
+      <a href="../../sdks/dotnet/" class="md-nav__link">
         
   
   
@@ -1011,8 +826,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1023,13 +840,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -1050,7 +865,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1065,10 +880,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../embedded/snerd-go/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    snerd-go (Go)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1084,6 +926,186 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use This
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quickstart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#newanyqueuename-maxconcurrency-pollinterval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NewAnyQueue(name, maxConcurrency, pollInterval)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registertaskhandlertasktype-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterTaskHandler(taskType, handler)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registermaxretryhandlertasktype-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterMaxRetryHandler(taskType, handler)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#newsnerdtaskid-tasktype-data-maxretries-retryafterhours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NewSnerdTask(id, taskType, data, maxRetries, retryAfterHours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#newsnerdtaskadvanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NewSnerdTaskAdvanced(...)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queueenqueuesnerdtasktask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        queue.EnqueueSnerdTask(task)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queuestartdashboardport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        queue.StartDashboard(port)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1096,7 +1118,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../embedded/snerd-rust/" class="md-nav__link">
+      <a href="../snerd-rust/" class="md-nav__link">
         
   
   
@@ -1296,6 +1318,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#when-to-use-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use This
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1318,6 +1351,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1330,10 +1374,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#new-snerdqueuestoragepath-null" class="md-nav__link">
+  <a href="#newanyqueuename-maxconcurrency-pollinterval" class="md-nav__link">
     <span class="md-ellipsis">
       
-        new SnerdQueue(storagePath = null)
+        NewAnyQueue(name, maxConcurrency, pollInterval)
       
     </span>
   </a>
@@ -1341,10 +1385,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-registerhandlertasktype-callback" class="md-nav__link">
+  <a href="#registertaskhandlertasktype-handler" class="md-nav__link">
     <span class="md-ellipsis">
       
-        $queue-&gt;registerHandler($taskType, $callback)
+        RegisterTaskHandler(taskType, handler)
       
     </span>
   </a>
@@ -1352,10 +1396,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-enqueue" class="md-nav__link">
+  <a href="#registermaxretryhandlertasktype-handler" class="md-nav__link">
     <span class="md-ellipsis">
       
-        $queue-&gt;enqueue(...)
+        RegisterMaxRetryHandler(taskType, handler)
       
     </span>
   </a>
@@ -1363,10 +1407,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-registermaxretryhandlertasktype-callback" class="md-nav__link">
+  <a href="#newsnerdtaskid-tasktype-data-maxretries-retryafterhours" class="md-nav__link">
     <span class="md-ellipsis">
       
-        $queue-&gt;registerMaxRetryHandler($taskType, $callback)
+        NewSnerdTask(id, taskType, data, maxRetries, retryAfterHours)
       
     </span>
   </a>
@@ -1374,10 +1418,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-startdashboardport" class="md-nav__link">
+  <a href="#newsnerdtaskadvanced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        $queue-&gt;startDashboard($port)
+        NewSnerdTaskAdvanced(...)
       
     </span>
   </a>
@@ -1385,10 +1429,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-yieldprogressmessage" class="md-nav__link">
+  <a href="#queueenqueuesnerdtasktask" class="md-nav__link">
     <span class="md-ellipsis">
       
-        $queue-&gt;yieldProgress($message)
+        queue.EnqueueSnerdTask(task)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queuestartdashboardport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        queue.StartDashboard(port)
       
     </span>
   </a>
@@ -1397,17 +1452,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hard-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hard Timeouts
-      
-    </span>
-  </a>
   
 </li>
       
@@ -1423,10 +1467,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#distributed-scaling" class="md-nav__link">
+  <a href="#storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Distributed Scaling
+        Storage
       
     </span>
   </a>
@@ -1453,91 +1497,124 @@
   
 
 
-<h1 id="php-sdk">PHP SDK<a class="headerlink" href="#php-sdk" title="Permanent link">&para;</a></h1>
-<p>The official PHP SDK for SnerdMQ. Works with Laravel, Symfony, or vanilla PHP. No Redis, no Beanstalkd, no RabbitMQ.</p>
-<p><a href="https://packagist.org/packages/speed-nerd/snerdmq"><img alt="Packagist Version" src="https://img.shields.io/packagist/v/speed-nerd/snerdmq" /></a></p>
+<h1 id="snerd-go-embedded-go-library">snerd-go (Embedded Go Library)<a class="headerlink" href="#snerd-go-embedded-go-library" title="Permanent link">&para;</a></h1>
+<p><code>snerd-go</code> is a <strong>native Go embedded library</strong> — no Rust daemon, no child process, no binary downloads. It's the ideal choice for pure Go applications that want background jobs without bundling an external binary.</p>
+<p><a href="https://pkg.go.dev/github.com/speed-nerd/snerd-go"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/speed-nerd/snerd-go.svg" /></a></p>
+<h2 id="when-to-use-this">When to Use This<a class="headerlink" href="#when-to-use-this" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Use <code>snerd-go</code></th>
+<th>Use <code>snerdmq-go</code> (thin client)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pure Go apps, no external binaries</td>
+<td>Polyglot microservices sharing one queue file</td>
+</tr>
+<tr>
+<td>Simple deployments, no binary to manage</td>
+<td>When you need cross-language queue interop</td>
+</tr>
+<tr>
+<td>Go-only services</td>
+<td>Go + Node/Python/PHP services on the same queue</td>
+</tr>
+</tbody>
+</table>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>composer<span class="w"> </span>require<span class="w"> </span>speed-nerd/snerdmq
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/speed-nerd/snerd-go
 </code></pre></div>
-<p>The post-install hook automatically downloads the correct Rust daemon binary for your OS.</p>
+<p>That's it. No install scripts, no binary downloads.</p>
 <h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">require</span> <span class="s1">&#39;vendor/autoload.php&#39;</span><span class="p">;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">use</span> <span class="nx">Snerdmq\SnerdQueue</span><span class="p">;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nv">$queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SnerdQueue</span><span class="p">();</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="s">&quot;context&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="s">&quot;fmt&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s">&quot;time&quot;</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1">// Register a handler</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nv">$queue</span><span class="o">-&gt;</span><span class="na">registerHandler</span><span class="p">(</span><span class="s2">&quot;send_email&quot;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="k">echo</span> <span class="s2">&quot;Sending email to </span><span class="si">{</span><span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="c1">// Throw an Exception to trigger retry</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">});</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">// Start listening</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="nv">$queue</span><span class="o">-&gt;</span><span class="na">startListening</span><span class="p">();</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">// Enqueue a job</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="nv">$queue</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="s2">&quot;email-123&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="s2">&quot;send_email&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="p">[</span><span class="s2">&quot;to&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;subject&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;Welcome!&quot;</span><span class="p">],</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="mi">3</span><span class="p">,</span>    <span class="c1">// max retries</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="mf">0.5</span>   <span class="c1">// retry after hours</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="p">);</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1">// Handle permanently failed tasks</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="nv">$queue</span><span class="o">-&gt;</span><span class="na">registerMaxRetryHandler</span><span class="p">(</span><span class="s1">&#39;send_email&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="k">echo</span> <span class="s2">&quot;Failed after all retries: &quot;</span> <span class="o">.</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="p">});</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="c1">// Run the event loop (in a dedicated worker script)</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="nv">$queue</span><span class="o">-&gt;</span><span class="na">listenLoop</span><span class="p">();</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nx">snerd</span><span class="w"> </span><span class="s">&quot;github.com/speed-nerd/snerd-go&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="c1">// Create the queue (name, max concurrency, poll interval)</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nx">queue</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">NewAnyQueue</span><span class="p">(</span><span class="s">&quot;my-queue&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="c1">// Register a handler</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">RegisterTaskHandler</span><span class="p">(</span><span class="s">&quot;send_email&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Sending email: %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="w">  </span><span class="c1">// Return error to trigger retry</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="p">})</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="c1">// Register a DLQ handler</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">    </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">RegisterMaxRetryHandler</span><span class="p">(</span><span class="s">&quot;send_email&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Permanently failed: %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">    </span><span class="p">})</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">    </span><span class="c1">// Enqueue a task</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="nx">task</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">NewSnerdTask</span><span class="p">(</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">        </span><span class="s">&quot;email-123&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">        </span><span class="s">&quot;send_email&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;to&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;user@example.com&quot;</span><span class="p">},</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="mi">3</span><span class="p">,</span><span class="w">    </span><span class="c1">// max retries</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">        </span><span class="mf">1.0</span><span class="p">,</span><span class="w">  </span><span class="c1">// retry after hours</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span><span class="p">)</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">    </span><span class="nx">queue</span><span class="p">.</span><span class="nx">EnqueueSnerdTask</span><span class="p">(</span><span class="nx">task</span><span class="p">)</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">    </span><span class="k">select</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// Keep alive</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="advanced-configuration">Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">rateLimitGroup</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;openai_api&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nx">maxPerMinute</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">50</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nx">autoDedupe</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nx">urgencyScore</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mf">0.95</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nx">cronStr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;1h&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nx">task</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">NewSnerdTaskAdvanced</span><span class="p">(</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="s">&quot;task-123&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="s">&quot;generate_report&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A crab in space&quot;</span><span class="p">},</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="mi">3</span><span class="p">,</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="mf">1.0</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="o">&amp;</span><span class="nx">rateLimitGroup</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="o">&amp;</span><span class="nx">maxPerMinute</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="o">&amp;</span><span class="nx">autoDedupe</span><span class="p">,</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="o">&amp;</span><span class="nx">urgencyScore</span><span class="p">,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">       </span><span class="c1">// executeAt</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="o">&amp;</span><span class="nx">cronStr</span><span class="p">,</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">       </span><span class="c1">// webhookUrl</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">       </span><span class="c1">// maxExecutionSeconds</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">)</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">EnqueueSnerdTask</span><span class="p">(</span><span class="nx">task</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
-<h3 id="new-snerdqueuestoragepath-null"><code>new SnerdQueue(storagePath = null)</code><a class="headerlink" href="#new-snerdqueuestoragepath-null" title="Permanent link">&para;</a></h3>
-<p>Creates a new queue instance and spawns the background daemon.</p>
-<h3 id="queue-registerhandlertasktype-callback"><code>$queue-&gt;registerHandler($taskType, $callback)</code><a class="headerlink" href="#queue-registerhandlertasktype-callback" title="Permanent link">&para;</a></h3>
-<p>Registers a closure handler for a task type.</p>
-<h3 id="queue-enqueue"><code>$queue-&gt;enqueue(...)</code><a class="headerlink" href="#queue-enqueue" title="Permanent link">&para;</a></h3>
-<p>Enqueues a new background job with positional arguments:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">$queue-&gt;enqueue(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    &quot;task-id&quot;,          // string: unique task ID</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">    &quot;task_type&quot;,        // string: task type</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="x">    [&quot;key&quot; =&gt; &quot;value&quot;], // array: JSON-serializable payload</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="x">    3,                  // int: max retries</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="x">    0.5,                // float: retry after hours</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="x">    &quot;api_group&quot;,        // string: rate limit group</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="x">    50,                 // int: max per minute</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="x">    true,               // bool: auto dedupe</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="x">    0.9,                // float: urgency score</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="x">    &quot;2026-12-31T23:59:00Z&quot;, // string: execute at</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="x">    &quot;0 8 * * *&quot;,        // string: cron expression</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="x">    &quot;https://...&quot;,      // string: webhook URL</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="x">    300                 // int: max execution seconds</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="x">);</span>
-</code></pre></div>
-<h3 id="queue-registermaxretryhandlertasktype-callback"><code>$queue-&gt;registerMaxRetryHandler($taskType, $callback)</code><a class="headerlink" href="#queue-registermaxretryhandlertasktype-callback" title="Permanent link">&para;</a></h3>
-<p>Registers a closure handler for permanently failed tasks (Dead Letter Queue).</p>
-<h3 id="queue-startdashboardport"><code>$queue-&gt;startDashboard($port)</code><a class="headerlink" href="#queue-startdashboardport" title="Permanent link">&para;</a></h3>
-<p>Starts the built-in React dashboard via PHP's built-in web server.</p>
-<h3 id="queue-yieldprogressmessage"><code>$queue-&gt;yieldProgress($message)</code><a class="headerlink" href="#queue-yieldprogressmessage" title="Permanent link">&para;</a></h3>
-<p>Streams a progress update from within a handler.</p>
-<h2 id="hard-timeouts">Hard Timeouts<a class="headerlink" href="#hard-timeouts" title="Permanent link">&para;</a></h2>
-<p>The PHP SDK uses <code>pcntl_alarm</code> for local timeout enforcement:</p>
-<ul>
-<li>Requires the <code>pcntl</code> extension</li>
-<li>Not supported on Windows (daemon still enforces timeouts at IPC level)</li>
-<li>Avoid using other <code>pcntl_alarm</code> calls within handlers</li>
-</ul>
+<h3 id="newanyqueuename-maxconcurrency-pollinterval"><code>NewAnyQueue(name, maxConcurrency, pollInterval)</code><a class="headerlink" href="#newanyqueuename-maxconcurrency-pollinterval" title="Permanent link">&para;</a></h3>
+<p>Creates a new queue with the given name, max worker goroutines, and polling interval.</p>
+<h3 id="registertaskhandlertasktype-handler"><code>RegisterTaskHandler(taskType, handler)</code><a class="headerlink" href="#registertaskhandlertasktype-handler" title="Permanent link">&para;</a></h3>
+<p>Registers a handler for a task type. The handler signature is:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
+</code></pre></div></p>
+<h3 id="registermaxretryhandlertasktype-handler"><code>RegisterMaxRetryHandler(taskType, handler)</code><a class="headerlink" href="#registermaxretryhandlertasktype-handler" title="Permanent link">&para;</a></h3>
+<p>Registers a Dead Letter Queue handler for permanently failed tasks.</p>
+<h3 id="newsnerdtaskid-tasktype-data-maxretries-retryafterhours"><code>NewSnerdTask(id, taskType, data, maxRetries, retryAfterHours)</code><a class="headerlink" href="#newsnerdtaskid-tasktype-data-maxretries-retryafterhours" title="Permanent link">&para;</a></h3>
+<p>Creates a basic task.</p>
+<h3 id="newsnerdtaskadvanced"><code>NewSnerdTaskAdvanced(...)</code><a class="headerlink" href="#newsnerdtaskadvanced" title="Permanent link">&para;</a></h3>
+<p>Creates a task with all advanced options (rate limit, dedup, priority, cron, webhook, timeout).</p>
+<h3 id="queueenqueuesnerdtasktask"><code>queue.EnqueueSnerdTask(task)</code><a class="headerlink" href="#queueenqueuesnerdtasktask" title="Permanent link">&para;</a></h3>
+<p>Enqueues a task for background execution.</p>
+<h3 id="queuestartdashboardport"><code>queue.StartDashboard(port)</code><a class="headerlink" href="#queuestartdashboardport" title="Permanent link">&para;</a></h3>
+<p>Starts the built-in React dashboard on the specified port.</p>
 <h2 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">$queue = new SnerdQueue();</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">$queue-&gt;startDashboard(9090);</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">// Open http://localhost:9090</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">queue</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">snerd</span><span class="p">.</span><span class="nx">NewAnyQueue</span><span class="p">(</span><span class="s">&quot;my-queue&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">StartDashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1">// Open http://localhost:9090</span>
 </code></pre></div>
-<h2 id="distributed-scaling">Distributed Scaling<a class="headerlink" href="#distributed-scaling" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">$queue = new SnerdQueue(null, &quot;/mnt/aws-efs-shared-drive/snerd_tasks.log&quot;);</span>
-</code></pre></div>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<p>By default, <code>snerd-go</code> writes to <code>.snerdata/tasks/tasks.log</code>. You can share this file with <code>snerdmq-node</code>, <code>snerdmq-python</code>, and other SDKs for cross-language queue sharing via OS-level file locking.</p>
 
 
 
