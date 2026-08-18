@@ -1,0 +1,25 @@
+/* Force dark header/nav bar in both light and dark modes */
+.md-header {
+  background-color: #1a1a1a !important;
+}
+
+.md-tabs {
+  background-color: #222222 !important;
+}
+
+/* Ensure header text/icons are readable on dark background */
+.md-header__title,
+.md-header__button,
+.md-header__topic {
+  color: #ffffff !important;
+}
+
+.md-header .md-icon svg {
+  fill: #ffffff !important;
+}
+
+/* Logo sizing in nav */
+.md-header__button.md-logo img {
+  height: 2.2rem;
+  width: auto;
+}
