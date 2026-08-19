@@ -13,7 +13,7 @@
 | Use `snerd-rust` | Use `snerdmq` daemon |
 |---|---|
 | Pure Rust applications | Node.js, Python, Go, Ruby, PHP, Java, C# apps |
-| Maximum performance, zero IPC overhead | Polyglot services sharing one queue |
+| Maximum performance, zero IPC overhead | Polyglot architectures (each service owns its own queue) |
 | No external binary to bundle | When you need the sidecar architecture |
 
 ## Installation
@@ -182,10 +182,10 @@ Starts the built-in React dashboard.
 ## Dashboard
 
 ```rust
-queue.start_dashboard(9090).await;
+queue.start_dashboard(9090);
 // Open http://localhost:9090
 ```
 
-## Sharing with Other Languages
+## Relationship with Other Languages
 
-`snerd-rust` writes to the same `.snerdata/tasks/tasks.log` format as all other SnerdMQ SDKs. Point multiple services (Rust, Go, Node, etc.) at the same file path for cross-language queue sharing — OS-level `flock` guarantees no corruption.
+`snerd-rust` writes to the same `.snerdata/tasks/tasks.log` format as every other SnerdMQ SDK, so storage is portable across the ecosystem. However, each storage file is exclusively owned by its single running instance — a second instance (Rust or otherwise) on the same path refuses to start. Polyglot setups give each service its own storage; cross-language execution happens via the task's `webhook_url` field, which the engine dispatches over HTTP with retries.

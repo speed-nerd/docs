@@ -10,7 +10,7 @@
 | Network latency on every enqueue/dequeue | Local file I/O — sub-millisecond |
 | Separate infrastructure to manage, monitor, and scale | Zero config — just install the SDK |
 | OOM kills when the queue grows | Bounded memory, disk-backed persistence |
-| Single-language clients | 7 official SDKs sharing the same queue |
+| Single-language clients | 7 official SDKs on the same engine and storage format |
 
 ## Key Features
 

@@ -1,6 +1,6 @@
 # Architecture
 
-SnerdMQ uses an **embedded sidecar** architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. Multiple instances can share the same queue by pointing at the same file on a shared volume.
+SnerdMQ uses an **embedded sidecar** architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. Each daemon exclusively owns its storage directory — scale by giving each server its own queue and storage (sharding), never by pointing multiple instances at one shared file.
 
 ## Overview
 
@@ -150,12 +150,15 @@ Each line is a JSON object representing the latest state of a task. When a task 
 
 ### File Locking
 
-Multiple processes can safely read and write to the same log file concurrently using OS-level file locks:
+All log access is protected by OS-level file locks:
 
 - **Linux/macOS** — `flock(2)` system call
 - **Windows** — `LockFileEx` API
 
-This is what enables the shared-volume scaling model (see [Deployment](production/deployment.md)).
+Locks serve two purposes:
+
+- **Write atomicity** — short-lived locks serialize appends and compaction, so the log is never corrupted.
+- **Exclusive ownership** — at startup, every daemon/queue instance takes a persistent exclusive lock on its storage (`<storage>/.lock` for the daemon, `<tasks.log>.lock` for the embedded libraries). A second instance on the same storage refuses to start, guaranteeing exactly one executor per queue. This is why the scaling model is sharding — one queue per server, each with its own storage (see [Deployment](production/deployment.md)).
 
 ## Task Lifecycle
 
@@ -203,7 +206,7 @@ SnerdMQ offers two ways to use the queue engine:
 | **Architecture** | SDK spawns the Rust daemon as a child process | Engine runs in-process (no separate binary) |
 | **Language** | Any language with SDK | Rust or Go only |
 | **Performance** | IPC overhead (microseconds per message) | Zero IPC — direct function calls |
-| **Polyglot** | Multiple SDKs share the same log file | Same log file format — can share with daemon SDKs |
+| **Polyglot** | All SDKs use the same storage format (each instance exclusively owns its own storage) | Same log file format — storage is portable across SDKs |
 | **Binary required** | Yes (auto-downloaded on install) | No (compiled into your app) |
 | **Use when** | You want language flexibility or polyglot services | You want maximum performance in Rust/Go |
 

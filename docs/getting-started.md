@@ -277,4 +277,4 @@ queue.StartListening();
 
 - [**Architecture**](architecture.md) — Understand how the daemon + SDK model works under the hood
 - [**Features**](features/retries-and-dlq.md) — Explore retries, rate limiting, cron, webhooks, and more
-- [**Production Deployment**](production/deployment.md) — Docker, Kubernetes, shared volumes, and monitoring
+- [**Production Deployment**](production/deployment.md) — Docker, Kubernetes, durable volumes, and monitoring

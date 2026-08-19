@@ -51,11 +51,12 @@ Common issues and their solutions when running SnerdMQ in production.
     rm .snerdata/tasks/tasks.log
     ```
 
-3. **NFS lock issues** — If using a shared volume, ensure `flock` is supported:
+3. **NFS/EFS lock issues** — If you point a single instance at a network drive for durable storage, ensure `flock` is supported:
     ```bash
     # AWS EFS supports flock natively
     # Some NFS implementations may not — check your provider
     ```
+    Note: network volumes are for single-instance durability only. Two instances on the same storage fail fast by design (exclusive lock) — scale by sharding, not by sharing.
 
 ## High Memory Usage
 

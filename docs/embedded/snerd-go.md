@@ -8,9 +8,9 @@
 
 | Use `snerd-go` | Use `snerdmq-go` (thin client) |
 |---|---|
-| Pure Go apps, no external binaries | Polyglot microservices sharing one queue file |
-| Simple deployments, no binary to manage | When you need cross-language queue interop |
-| Go-only services | Go + Node/Python/PHP services on the same queue |
+| Pure Go apps, no external binaries | Polyglot microservices (each service owns its own queue) |
+| Simple deployments, no binary to manage | When you want the daemon architecture in Go |
+| Go-only services | Go services coordinating with other languages via webhook tasks |
 
 ## Installation
 
