@@ -981,6 +981,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#queue-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue Topology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#distributed-scaling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1423,6 +1434,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#queue-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue Topology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#distributed-scaling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1536,9 +1558,41 @@
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">queue</span><span class="p">.</span><span class="n">StartDashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">);</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">// Open http://localhost:9090</span>
 </code></pre></div>
-<h2 id="distributed-scaling">Distributed Scaling<a class="headerlink" href="#distributed-scaling" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/mnt/aws-efs-shared-drive/snerd_tasks.log&quot;</span><span class="p">);</span>
+<h2 id="queue-topology">Queue Topology<a class="headerlink" href="#queue-topology" title="Permanent link">&para;</a></h2>
+<p><strong>Recommended: one queue, all job types (singleton).</strong> Each SDK client spawns its own Rust daemon and exclusively owns its storage directory (<code>.snerdata</code> by default). Register every job type on one client and serve a single shared dashboard:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">();</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1">// Two job types sharing the same queue, daemon, and dashboard</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">queue</span><span class="p">.</span><span class="n">RegisterHandler</span><span class="p">(</span><span class="s">&quot;process_image&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">jsonData</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">{</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;Processing image: {jsonData}&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">});</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">queue</span><span class="p">.</span><span class="n">RegisterHandler</span><span class="p">(</span><span class="s">&quot;send_otp_email&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">jsonData</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">{</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;Sending OTP: {jsonData}&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">});</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="n">queue</span><span class="p">.</span><span class="n">StartDashboard</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span><span class="w"> </span><span class="c1">// one dashboard shows every job type</span>
 </code></pre></div>
+<p>All job types share the same job log, retry/DLQ pipeline, rate-limit state, and stats.</p>
+<div class="admonition warning">
+<p class="admonition-title">One queue per storage directory</p>
+<p>The daemon takes an exclusive OS-level lock on its storage directory at startup. A second client on the same storage <strong>fails fast</strong> ("Another daemon is already running on storage ...") instead of double-executing jobs. This also applies across processes — multi-worker deployments need one storage directory per worker.</p>
+</div>
+<p>Need isolation between workloads? Give each queue its own storage directory — they become fully independent engines (own job log, rate limits, dashboard on its own port):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;.snerdata-images&quot;</span><span class="p">);</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">emails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;.snerdata-emails&quot;</span><span class="p">);</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">images</span><span class="p">.</span><span class="n">StartDashboard</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">emails</span><span class="p">.</span><span class="n">StartDashboard</span><span class="p">(</span><span class="mi">8081</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="distributed-scaling">Distributed Scaling<a class="headerlink" href="#distributed-scaling" title="Permanent link">&para;</a></h2>
+<p>Scaling horizontally means <strong>one queue per server</strong>, each with its own storage — the load balancer routes requests, and every server processes the jobs it enqueued:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Each server runs its own daemon on its own storage dir (local disk works fine)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/var/data/snerd&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p>A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.</p>
 
 
 

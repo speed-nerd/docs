@@ -1473,7 +1473,7 @@
 <p>SnerdMQ scales from a single laptop to a cluster:</p>
 <ul>
 <li><strong>Single machine</strong> — The daemon writes to local disk. Sub-millisecond latency.</li>
-<li><strong>Multiple workers</strong> — Mount a shared volume (AWS EFS, NFS) and point all instances at the same log file. OS-level <code>flock</code> handles cross-process synchronization.</li>
+<li><strong>Multiple workers</strong> — One queue per worker/server, each with its own storage: the daemon exclusively locks its storage directory, so scaling out means sharding. OS-level <code>flock</code> keeps writes safe.</li>
 <li><strong>Kubernetes / ECS</strong> — Bundle the daemon binary in your app container. No sidecar containers needed.</li>
 </ul>
 <p><a href="production/deployment/">:octicons-arrow-right-24: Production deployment guide</a></p>

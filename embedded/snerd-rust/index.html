@@ -1004,6 +1004,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#queue-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue Topology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1351,6 +1362,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#queue-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue Topology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1583,11 +1605,53 @@
 <a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">    </span><span class="n">tokio</span><span class="p">::</span><span class="n">time</span><span class="p">::</span><span class="n">sleep</span><span class="p">(</span><span class="n">Duration</span><span class="p">::</span><span class="n">from_secs</span><span class="p">(</span><span class="mi">60</span><span class="p">)).</span><span class="k">await</span><span class="p">;</span>
 <a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="p">}</span>
 </code></pre></div>
+<h2 id="queue-topology">Queue Topology<a class="headerlink" href="#queue-topology" title="Permanent link">&para;</a></h2>
+<p><strong>Recommended: one queue, all job types (singleton).</strong> Register every job type on a single queue and serve one shared dashboard:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">let</span><span class="w"> </span><span class="n">file_store</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FileStore</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;.snerdata/tasks/tasks.log&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">let</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">::</span><span class="n">new</span><span class="p">(</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="s">&quot;main&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">file_store</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">RateLimiter</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">std</span><span class="p">::</span><span class="n">path</span><span class="p">::</span><span class="n">PathBuf</span><span class="p">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;.snerdata&quot;</span><span class="p">)),</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">);</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1">// Two job types sharing the same queue</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">queue</span><span class="p">.</span><span class="n">register_task_handler</span><span class="p">(</span><span class="s">&quot;process_image&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="o">|</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">&quot;Processing image: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="nb">Ok</span><span class="p">(())</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}).</span><span class="k">await</span><span class="p">;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="n">queue</span><span class="p">.</span><span class="n">register_task_handler</span><span class="p">(</span><span class="s">&quot;send_otp_email&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="o">|</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">&quot;Sending OTP: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nb">Ok</span><span class="p">(())</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">}).</span><span class="k">await</span><span class="p">;</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="n">queue</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">);</span><span class="w"> </span><span class="c1">// one dashboard shows every job type</span>
+</code></pre></div>
+<p>All job types share the same job log, retry/DLQ pipeline, rate-limit state, and stats.</p>
+<p>Need isolation between workloads? Give each queue its own storage file — they become fully independent engines (own job log, rate limits, dashboard on its own port):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">let</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">::</span><span class="n">new</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="s">&quot;images&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">FileStore</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;.snerdata-images/tasks.log&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">(),</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">RateLimiter</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">std</span><span class="p">::</span><span class="n">path</span><span class="p">::</span><span class="n">PathBuf</span><span class="p">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;.snerdata-images&quot;</span><span class="p">)),</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">);</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kd">let</span><span class="w"> </span><span class="n">emails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SnerdQueue</span><span class="p">::</span><span class="n">new</span><span class="p">(</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="s">&quot;emails&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">FileStore</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;.snerdata-emails/tasks.log&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">(),</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="n">RateLimiter</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">std</span><span class="p">::</span><span class="n">path</span><span class="p">::</span><span class="n">PathBuf</span><span class="p">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;.snerdata-emails&quot;</span><span class="p">)),</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">);</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">images</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">);</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">emails</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9091</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
 <h3 id="filestorenewpath"><code>FileStore::new(path)</code><a class="headerlink" href="#filestorenewpath" title="Permanent link">&para;</a></h3>
 <p>Creates a new persistence store backed by the given file path.</p>
 <h3 id="snerdqueuenewname-file_store-rate_limiter"><code>SnerdQueue::new(name, file_store, rate_limiter)</code><a class="headerlink" href="#snerdqueuenewname-file_store-rate_limiter" title="Permanent link">&para;</a></h3>
 <p>Creates a new queue instance.</p>
+<div class="admonition warning">
+<p class="admonition-title">One queue instance per storage file</p>
+<p><code>SnerdQueue::new</code> takes an exclusive OS-level lock on the storage file (e.g. <code>tasks.log.lock</code>) and holds it for the queue's lifetime. A second queue on the same file <strong>panics</strong> instead of racing it and double-executing tasks. Register all your task types on a single queue, or create a <code>FileStore</code> with a different path for each queue.</p>
+</div>
 <h3 id="queueregister_task_handlertask_type-handler"><code>queue.register_task_handler(task_type, handler)</code><a class="headerlink" href="#queueregister_task_handlertask_type-handler" title="Permanent link">&para;</a></h3>
 <p>Registers an async handler closure for a task type. The handler receives the task's JSON data as a <code>String</code> and returns <code>Result&lt;(), String&gt;</code>.</p>
 <h3 id="queueregister_max_retry_handlertask_type-handler"><code>queue.register_max_retry_handler(task_type, handler)</code><a class="headerlink" href="#queueregister_max_retry_handlertask_type-handler" title="Permanent link">&para;</a></h3>
@@ -1598,27 +1662,27 @@
 <p>Enqueues a <code>RetryableTask</code> for background execution.</p>
 <h3 id="retryabletasknew"><code>RetryableTask::new(...)</code><a class="headerlink" href="#retryabletasknew" title="Permanent link">&para;</a></h3>
 <p>Creates a new task with all configuration options:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">RetryableTask</span><span class="p">::</span><span class="n">new</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">id</span><span class="p">,</span><span class="w">                    </span><span class="c1">// String: unique ID</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">task_type</span><span class="p">,</span><span class="w">             </span><span class="c1">// String: handler name</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">data</span><span class="p">,</span><span class="w">                  </span><span class="c1">// String: JSON payload</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">max_retries</span><span class="p">,</span><span class="w">           </span><span class="c1">// u32</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="n">retry_after_hours</span><span class="p">,</span><span class="w">     </span><span class="c1">// f64</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">rate_limit_group</span><span class="p">,</span><span class="w">      </span><span class="c1">// Option&lt;String&gt;</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">max_per_minute</span><span class="p">,</span><span class="w">        </span><span class="c1">// Option&lt;u32&gt;</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="n">auto_dedupe</span><span class="p">,</span><span class="w">           </span><span class="c1">// Option&lt;bool&gt;</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="n">urgency_score</span><span class="p">,</span><span class="w">         </span><span class="c1">// Option&lt;f64&gt;</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="n">execute_at</span><span class="p">,</span><span class="w">            </span><span class="c1">// Option&lt;String&gt; (RFC3339)</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="n">cron</span><span class="p">,</span><span class="w">                  </span><span class="c1">// Option&lt;String&gt;</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="n">webhook_url</span><span class="p">,</span><span class="w">           </span><span class="c1">// Option&lt;String&gt;</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="n">max_execution_seconds</span><span class="p">,</span><span class="w"> </span><span class="c1">// Option&lt;u64&gt;</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">RetryableTask</span><span class="p">::</span><span class="n">new</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">id</span><span class="p">,</span><span class="w">                    </span><span class="c1">// String: unique ID</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">task_type</span><span class="p">,</span><span class="w">             </span><span class="c1">// String: handler name</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="n">data</span><span class="p">,</span><span class="w">                  </span><span class="c1">// String: JSON payload</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="n">max_retries</span><span class="p">,</span><span class="w">           </span><span class="c1">// u32</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="n">retry_after_hours</span><span class="p">,</span><span class="w">     </span><span class="c1">// f64</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="n">rate_limit_group</span><span class="p">,</span><span class="w">      </span><span class="c1">// Option&lt;String&gt;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="n">max_per_minute</span><span class="p">,</span><span class="w">        </span><span class="c1">// Option&lt;u32&gt;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">auto_dedupe</span><span class="p">,</span><span class="w">           </span><span class="c1">// Option&lt;bool&gt;</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="n">urgency_score</span><span class="p">,</span><span class="w">         </span><span class="c1">// Option&lt;f64&gt;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">execute_at</span><span class="p">,</span><span class="w">            </span><span class="c1">// Option&lt;String&gt; (RFC3339)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="n">cron</span><span class="p">,</span><span class="w">                  </span><span class="c1">// Option&lt;String&gt;</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="n">webhook_url</span><span class="p">,</span><span class="w">           </span><span class="c1">// Option&lt;String&gt;</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="n">max_execution_seconds</span><span class="p">,</span><span class="w"> </span><span class="c1">// Option&lt;u64&gt;</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="queuestart_dashboardport"><code>queue.start_dashboard(port)</code><a class="headerlink" href="#queuestart_dashboardport" title="Permanent link">&para;</a></h3>
 <p>Starts the built-in React dashboard.</p>
 <h2 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">queue</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">).</span><span class="k">await</span><span class="p">;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">// Open http://localhost:9090</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">queue</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">).</span><span class="k">await</span><span class="p">;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">// Open http://localhost:9090</span>
 </code></pre></div>
 <h2 id="sharing-with-other-languages">Sharing with Other Languages<a class="headerlink" href="#sharing-with-other-languages" title="Permanent link">&para;</a></h2>
 <p><code>snerd-rust</code> writes to the same <code>.snerdata/tasks/tasks.log</code> format as all other SnerdMQ SDKs. Point multiple services (Rust, Go, Node, etc.) at the same file path for cross-language queue sharing — OS-level <code>flock</code> guarantees no corruption.</p>

@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://speed-nerd.github.io/docs/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/architecture/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/getting-started/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/embedded/snerd-go/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/embedded/snerd-rust/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/cron-scheduling/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/deduplication/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/priority-queue/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/rate-limiting/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/retries-and-dlq/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/features/webhooks/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/production/deployment/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/production/monitoring/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/production/troubleshooting/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/dotnet/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/go/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/java/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/node/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/php/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/python/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
     <url>
          <loc>https://speed-nerd.github.io/docs/sdks/ruby/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-08-19</lastmod>
     </url>
 </urlset>
