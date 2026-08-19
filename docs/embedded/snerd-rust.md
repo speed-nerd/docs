@@ -78,6 +78,52 @@ async fn main() {
 }
 ```
 
+## Queue Topology
+
+**Recommended: one queue, all job types (singleton).** Register every job type on a single queue and serve one shared dashboard:
+
+```rust
+let file_store = FileStore::new(".snerdata/tasks/tasks.log").unwrap();
+let queue = SnerdQueue::new(
+    "main",
+    file_store,
+    RateLimiter::new(&std::path::PathBuf::from(".snerdata")),
+);
+
+// Two job types sharing the same queue
+queue.register_task_handler("process_image", |data| {
+    println!("Processing image: {}", data);
+    Ok(())
+}).await;
+
+queue.register_task_handler("send_otp_email", |data| {
+    println!("Sending OTP: {}", data);
+    Ok(())
+}).await;
+
+queue.start_dashboard(9090); // one dashboard shows every job type
+```
+
+All job types share the same job log, retry/DLQ pipeline, rate-limit state, and stats.
+
+Need isolation between workloads? Give each queue its own storage file — they become fully independent engines (own job log, rate limits, dashboard on its own port):
+
+```rust
+let images = SnerdQueue::new(
+    "images",
+    FileStore::new(".snerdata-images/tasks.log").unwrap(),
+    RateLimiter::new(&std::path::PathBuf::from(".snerdata-images")),
+);
+let emails = SnerdQueue::new(
+    "emails",
+    FileStore::new(".snerdata-emails/tasks.log").unwrap(),
+    RateLimiter::new(&std::path::PathBuf::from(".snerdata-emails")),
+);
+
+images.start_dashboard(9090);
+emails.start_dashboard(9091);
+```
+
 ## API Reference
 
 ### `FileStore::new(path)`
@@ -87,6 +133,9 @@ Creates a new persistence store backed by the given file path.
 ### `SnerdQueue::new(name, file_store, rate_limiter)`
 
 Creates a new queue instance.
+
+!!! warning "One queue instance per storage file"
+    `SnerdQueue::new` takes an exclusive OS-level lock on the storage file (e.g. `tasks.log.lock`) and holds it for the queue's lifetime. A second queue on the same file **panics** instead of racing it and double-executing tasks. Register all your task types on a single queue, or create a `FileStore` with a different path for each queue.
 
 ### `queue.register_task_handler(task_type, handler)`
 

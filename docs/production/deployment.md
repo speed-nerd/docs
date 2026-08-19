@@ -52,48 +52,45 @@ volumes:
 
 ## Distributed Deployment (Multi-Node)
 
-To share a queue across multiple servers, mount a **shared network volume** (AWS EFS, NFS, etc.):
+The daemon takes an **exclusive lock on its storage directory** at startup, so multiple replicas cannot process the same queue concurrently — a second daemon on the same storage refuses to start. This is deliberate: two processors on the same job log would race and double-execute jobs.
 
-```bash
-# All 10 servers point to the same shared file
-# OS-level file locking (flock) handles synchronization
-./snerdmq /mnt/shared/snerd_tasks.log
-```
+Scaling out therefore means **one queue per replica**, each with its own storage. Your load balancer routes requests across replicas, and every replica processes the jobs it enqueued:
 
-### AWS ECS / Fargate
+=== "Node.js"
+    ```typescript
+    // Each replica runs its own daemon on its own storage (local disk works fine)
+    const queue = new SnerdQueue({ storagePath: '/var/data/snerd' });
+    ```
 
-```yaml
-# task-definition.json
-{
-  "containerDefinitions": [{
-    "name": "app",
-    "mountPoints": [{
-      "sourceVolume": "efs-volume",
-      "containerPath": "/mnt/shared"
-    }],
-    "environment": [{
-      "name": "SNERD_STORAGE_PATH",
-      "value": "/mnt/shared/snerd_tasks.log"
-    }]
-  }],
-  "volumes": [{
-    "name": "efs-volume",
-    "efsVolumeConfiguration": {
-      "fileSystemId": "fs-12345678"
-    }
-  }]
-}
-```
+=== "Python"
+    ```python
+    # Each replica runs its own daemon on its own storage (local disk works fine)
+    queue = SnerdQueue(storage_path='/var/data/snerd')
+    ```
 
-### Kubernetes
+=== "Go"
+    ```go
+    // Each replica runs its own daemon on its own storage (local disk works fine)
+    queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
+        StoragePath: "/var/data/snerd",
+    })
+    ```
+
+!!! warning "Multi-worker processes"
+    The same lock applies *inside* a machine: with Gunicorn/Uvicorn workers, Node `cluster` forks, or Puma clustered workers, every worker is a separate process that spawns its own daemon. Give each worker its own `storagePath`, or run a single dedicated worker process for background jobs.
+
+### Durable storage for a single instance
+
+A shared network volume (AWS EFS, NFS) is still useful when **one** instance needs its queue state to survive restarts — e.g. a container that gets rescheduled but must keep its pending jobs:
 
 ```yaml
+# Kubernetes: single-replica deployment with a durable volume
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+  name: my-worker
 spec:
-  replicas: 3
+  replicas: 1  # One daemon owns the storage; scale by sharding, not replicas
   template:
     spec:
       containers:
@@ -101,54 +98,41 @@ spec:
           image: my-app:latest
           volumeMounts:
             - name: snerd-storage
-              mountPath: /mnt/shared
-          env:
-            - name: SNERD_STORAGE_PATH
-              value: /mnt/shared/snerd_tasks.log
+              mountPath: /var/data/snerd
       volumes:
         - name: snerd-storage
           persistentVolumeClaim:
-            claimName: snerd-efs-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: snerd-efs-pvc
-spec:
-  accessModes:
-    - ReadWriteMany  # Required for multi-node
-  storageClassName: efs-sc
-  resources:
-    requests:
-      storage: 5Gi
+            claimName: snerd-pvc
 ```
+
+For multi-replica services, prefer per-replica local storage (emptyDir or the container filesystem) — each replica's queue is independent by design.
 
 ## Storage Path Configuration
 
-All SDKs accept a custom storage path:
+All SDKs accept a custom storage path — use it to isolate queues per workload (each path gets its own daemon, job log, and dashboard):
 
 === "Node.js"
     ```typescript
     const queue = new SnerdQueue({
-        storagePath: '/mnt/shared/snerd_tasks.log'
+        storagePath: '/var/data/snerd-emails'
     });
     ```
 
 === "Python"
     ```python
-    queue = SnerdQueue(storage_path='/mnt/shared/snerd_tasks.log')
+    queue = SnerdQueue(storage_path='/var/data/snerd-emails')
     ```
 
 === "Go"
     ```go
     queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
-        StoragePath: "/mnt/shared/snerd_tasks.log",
+        StoragePath: "/var/data/snerd-emails",
     })
     ```
 
 === "Ruby"
     ```ruby
-    queue = Snerdmq::SnerdQueue.new(storage_path: "/mnt/shared/snerd_tasks.log")
+    queue = Snerdmq::SnerdQueue.new(storage_path: "/var/data/snerd-emails")
     ```
 
 ## Binary Installation
@@ -173,10 +157,11 @@ Download the pre-built binary for your platform from [github.com/speed-nerd/sner
 
 ## Production Checklist
 
-- [ ] Use a **shared volume** for multi-node deployments
-- [ ] Set `SNERD_STORAGE_PATH` explicitly (don't rely on defaults)
+- [ ] One queue (daemon) per storage directory — register all job types on it
+- [ ] For multi-replica services: each replica gets its own storage; scale by sharding
+- [ ] Use shared volumes (EFS/NFS) only for single-instance durable state
+- [ ] Set an explicit storage path in production (don't rely on defaults)
 - [ ] Ensure your container image includes the daemon binary
-- [ ] Use `ReadWriteMany` access mode for PVCs in Kubernetes
 - [ ] Monitor queue health via the dashboard or `/api/stats` endpoint
 - [ ] Set up alerts for Dead Letter Queue events
 - [ ] Configure graceful shutdown handlers in your application

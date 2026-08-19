@@ -70,9 +70,9 @@ Creates a new queue instance.
 
 ```go
 queue, _ := snerdmq.NewSnerdQueue()
-// Or with custom config:
+// Or with a custom storage directory:
 queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
-    StoragePath: "/custom/path/tasks.log",
+    StoragePath: "/custom/path",
 })
 ```
 
@@ -128,10 +128,50 @@ go get github.com/speed-nerd/snerd-go
 
 This provides native Go queue orchestration without spawning a child process.
 
-## Distributed Scaling
+## Queue Topology
+
+**Recommended: one queue, all job types (singleton).** Each SDK client spawns its own Rust daemon and exclusively owns its storage directory (`.snerdata` by default). Register every job type on one client and serve a single shared dashboard:
 
 ```go
+queue, _ := snerdmq.NewSnerdQueue()
+
+// Two job types sharing the same queue, daemon, and dashboard
+queue.RegisterHandler("process_image", func(ctx context.Context, data map[string]interface{}) error {
+    fmt.Printf("Processing image: %v\n", data["image_id"])
+    return nil
+})
+queue.RegisterHandler("send_otp_email", func(ctx context.Context, data map[string]interface{}) error {
+    fmt.Printf("Sending OTP to: %v\n", data["to"])
+    return nil
+})
+
+queue.StartDashboard(8080) // one dashboard shows every job type
+```
+
+All job types share the same job log, retry/DLQ pipeline, rate-limit state, and stats.
+
+!!! warning "One queue per storage directory"
+    The daemon takes an exclusive OS-level lock on its storage directory at startup. A second client on the same storage **fails fast** ("Another daemon is already running on storage ...") instead of double-executing jobs. This also applies across processes — multi-worker deployments need one storage directory per worker.
+
+Need isolation between workloads? Give each queue its own storage directory — they become fully independent engines (own job log, rate limits, dashboard on its own port):
+
+```go
+images, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{StoragePath: ".snerdata-images"})
+emails, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{StoragePath: ".snerdata-emails"})
+
+images.StartDashboard(8080)
+emails.StartDashboard(8081)
+```
+
+## Distributed Scaling
+
+Scaling horizontally means **one queue per server**, each with its own storage — the load balancer routes requests, and every server processes the jobs it enqueued:
+
+```go
+// Each server runs its own daemon on its own storage dir (local disk works fine)
 queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
-    StoragePath: "/mnt/aws-efs-shared-drive/snerd_tasks.log",
+    StoragePath: "/var/data/snerd",
 })
 ```
+
+A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.

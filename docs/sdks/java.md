@@ -123,8 +123,47 @@ queue.startDashboard(9090);
 // Open http://localhost:9090
 ```
 
-## Distributed Scaling
+## Queue Topology
+
+**Recommended: one queue, all job types (singleton).** Each SDK client spawns its own Rust daemon and exclusively owns its storage directory (`.snerdata` by default). Register every job type on one client and serve a single shared dashboard:
 
 ```java
-SnerdQueue queue = new SnerdQueue(null, "/mnt/aws-efs-shared-drive/snerd_tasks.log");
+SnerdQueue queue = new SnerdQueue();
+
+// Two job types sharing the same queue, daemon, and dashboard
+queue.registerHandler("process_image", (jsonData) -> {
+    System.out.println("Processing image: " + jsonData);
+});
+
+queue.registerHandler("send_otp_email", (jsonData) -> {
+    System.out.println("Sending OTP: " + jsonData);
+});
+
+queue.startDashboard(8080); // one dashboard shows every job type
 ```
+
+All job types share the same job log, retry/DLQ pipeline, rate-limit state, and stats.
+
+!!! warning "One queue per storage directory"
+    The daemon takes an exclusive OS-level lock on its storage directory at startup. A second client on the same storage **fails fast** ("Another daemon is already running on storage ...") instead of double-executing jobs. This also applies across processes — multiple JVM services on the same machine each need their own `storagePath`.
+
+Need isolation between workloads? Give each queue its own storage directory — they become fully independent engines (own job log, rate limits, dashboard on its own port):
+
+```java
+SnerdQueue images = new SnerdQueue(null, ".snerdata-images");
+SnerdQueue emails = new SnerdQueue(null, ".snerdata-emails");
+
+images.startDashboard(8080);
+emails.startDashboard(8081);
+```
+
+## Distributed Scaling
+
+Scaling horizontally means **one queue per server**, each with its own storage — the load balancer routes requests, and every server processes the jobs it enqueued:
+
+```java
+// Each server runs its own daemon on its own storage dir (local disk works fine)
+SnerdQueue queue = new SnerdQueue(null, "/var/data/snerd");
+```
+
+A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.

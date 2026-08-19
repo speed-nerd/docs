@@ -156,7 +156,7 @@ Each SDK spawns the same Rust-compiled `snerdmq` daemon as a child process and c
 SnerdMQ scales from a single laptop to a cluster:
 
 - **Single machine** — The daemon writes to local disk. Sub-millisecond latency.
-- **Multiple workers** — Mount a shared volume (AWS EFS, NFS) and point all instances at the same log file. OS-level `flock` handles cross-process synchronization.
+- **Multiple workers** — One queue per worker/server, each with its own storage: the daemon exclusively locks its storage directory, so scaling out means sharding. OS-level `flock` keeps writes safe.
 - **Kubernetes / ECS** — Bundle the daemon binary in your app container. No sidecar containers needed.
 
 [:octicons-arrow-right-24: Production deployment guide](production/deployment.md)
