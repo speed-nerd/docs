@@ -1443,10 +1443,11 @@
 </code></pre></div></p>
 </li>
 <li>
-<p><strong>NFS lock issues</strong> — If using a shared volume, ensure <code>flock</code> is supported:
+<p><strong>NFS/EFS lock issues</strong> — If you point a single instance at a network drive for durable storage, ensure <code>flock</code> is supported:
     <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># AWS EFS supports flock natively</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Some NFS implementations may not — check your provider</span>
-</code></pre></div></p>
+</code></pre></div>
+    Note: network volumes are for single-instance durability only. Two instances on the same storage fail fast by design (exclusive lock) — scale by sharding, not by sharing.</p>
 </li>
 </ol>
 <h2 id="high-memory-usage">High Memory Usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h2>

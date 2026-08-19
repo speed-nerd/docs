@@ -1131,10 +1131,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sharing-with-other-languages" class="md-nav__link">
+  <a href="#relationship-with-other-languages" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharing with Other Languages
+        Relationship with Other Languages
       
     </span>
   </a>
@@ -1489,10 +1489,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sharing-with-other-languages" class="md-nav__link">
+  <a href="#relationship-with-other-languages" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharing with Other Languages
+        Relationship with Other Languages
       
     </span>
   </a>
@@ -1542,7 +1542,7 @@
 </tr>
 <tr>
 <td>Maximum performance, zero IPC overhead</td>
-<td>Polyglot services sharing one queue</td>
+<td>Polyglot architectures (each service owns its own queue)</td>
 </tr>
 <tr>
 <td>No external binary to bundle</td>
@@ -1681,11 +1681,11 @@
 <h3 id="queuestart_dashboardport"><code>queue.start_dashboard(port)</code><a class="headerlink" href="#queuestart_dashboardport" title="Permanent link">&para;</a></h3>
 <p>Starts the built-in React dashboard.</p>
 <h2 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">queue</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">).</span><span class="k">await</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">queue</span><span class="p">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">9090</span><span class="p">);</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">// Open http://localhost:9090</span>
 </code></pre></div>
-<h2 id="sharing-with-other-languages">Sharing with Other Languages<a class="headerlink" href="#sharing-with-other-languages" title="Permanent link">&para;</a></h2>
-<p><code>snerd-rust</code> writes to the same <code>.snerdata/tasks/tasks.log</code> format as all other SnerdMQ SDKs. Point multiple services (Rust, Go, Node, etc.) at the same file path for cross-language queue sharing — OS-level <code>flock</code> guarantees no corruption.</p>
+<h2 id="relationship-with-other-languages">Relationship with Other Languages<a class="headerlink" href="#relationship-with-other-languages" title="Permanent link">&para;</a></h2>
+<p><code>snerd-rust</code> writes to the same <code>.snerdata/tasks/tasks.log</code> format as every other SnerdMQ SDK, so storage is portable across the ecosystem. However, each storage file is exclusively owned by its single running instance — a second instance (Rust or otherwise) on the same path refuses to start. Polyglot setups give each service its own storage; cross-language execution happens via the task's <code>webhook_url</code> field, which the engine dispatches over HTTP with retries.</p>
 
 
 

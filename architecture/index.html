@@ -1422,7 +1422,7 @@
 
 
 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
-<p>SnerdMQ uses an <strong>embedded sidecar</strong> architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. Multiple instances can share the same queue by pointing at the same file on a shared volume.</p>
+<p>SnerdMQ uses an <strong>embedded sidecar</strong> architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. Each daemon exclusively owns its storage directory — scale by giving each server its own queue and storage (sharding), never by pointing multiple instances at one shared file.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Application Server (Node, Python, Go, etc.)      │
@@ -1625,12 +1625,16 @@
 <li><strong>Compaction</strong> — Periodically, the daemon rewrites the log keeping only the latest state of each task, reclaiming space.</li>
 </ul>
 <h3 id="file-locking">File Locking<a class="headerlink" href="#file-locking" title="Permanent link">&para;</a></h3>
-<p>Multiple processes can safely read and write to the same log file concurrently using OS-level file locks:</p>
+<p>All log access is protected by OS-level file locks:</p>
 <ul>
 <li><strong>Linux/macOS</strong> — <code>flock(2)</code> system call</li>
 <li><strong>Windows</strong> — <code>LockFileEx</code> API</li>
 </ul>
-<p>This is what enables the shared-volume scaling model (see <a href="../production/deployment/">Deployment</a>).</p>
+<p>Locks serve two purposes:</p>
+<ul>
+<li><strong>Write atomicity</strong> — short-lived locks serialize appends and compaction, so the log is never corrupted.</li>
+<li><strong>Exclusive ownership</strong> — at startup, every daemon/queue instance takes a persistent exclusive lock on its storage (<code>&lt;storage&gt;/.lock</code> for the daemon, <code>&lt;tasks.log&gt;.lock</code> for the embedded libraries). A second instance on the same storage refuses to start, guaranteeing exactly one executor per queue. This is why the scaling model is sharding — one queue per server, each with its own storage (see <a href="../production/deployment/">Deployment</a>).</li>
+</ul>
 <h2 id="task-lifecycle">Task Lifecycle<a class="headerlink" href="#task-lifecycle" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>                    ┌──────────┐
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                    │ Enqueued │
@@ -1694,8 +1698,8 @@
 </tr>
 <tr>
 <td><strong>Polyglot</strong></td>
-<td>Multiple SDKs share the same log file</td>
-<td>Same log file format — can share with daemon SDKs</td>
+<td>All SDKs use the same storage format (each instance exclusively owns its own storage)</td>
+<td>Same log file format — storage is portable across SDKs</td>
 </tr>
 <tr>
 <td><strong>Binary required</strong></td>
