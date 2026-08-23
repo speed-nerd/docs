@@ -56,7 +56,7 @@ Common issues and their solutions when running SnerdMQ in production.
     # AWS EFS supports flock natively
     # Some NFS implementations may not — check your provider
     ```
-    Note: network volumes are for single-instance durability only. Two instances on the same storage fail fast by design (exclusive lock) — scale by sharding, not by sharing.
+    Note: network volumes are for single-instance durability only. Two instances on the same storage fail fast by design (exclusive lock) — scale by sharding, not by sharing. If a second queue targets busy storage, its daemon refuses to start and `enqueue` raises `[Snerd] Engine terminated before ack for task '<id>'` (or `Cannot enqueue task: engine is not running`) instead of hanging.
 
 ## High Memory Usage
 

@@ -2,6 +2,9 @@
 
 SnerdMQ provides automatic retry with configurable backoff for failed tasks. When a task permanently fails (exhausts all retries), it lands in the Dead Letter Queue (DLQ) where you can inspect, alert, or reprocess it.
 
+!!! note "Delivery semantics"
+    SnerdMQ provides **at-least-once** delivery. In rare cases — e.g. if the daemon is killed while a task is executing — a task may be executed again after restart. Make your handlers idempotent.
+
 ## How Retries Work
 
 When a task handler throws an error (exception, rejected promise, or non-zero exit), SnerdMQ:

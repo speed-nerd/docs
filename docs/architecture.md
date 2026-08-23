@@ -197,6 +197,9 @@ Locks serve two purposes:
 6. **Retry** — Task's `retry_after_time` is set; it will be re-dispatched after the backoff
 7. **Dead Letter Queue** — All retries exhausted; `max_retries_reached` event is fired
 
+!!! note "Delivery semantics"
+    SnerdMQ provides **at-least-once** delivery. The in-memory dispatch state (which task is currently executing) is not durable, so if the daemon is killed mid-execution, the task is re-dispatched after restart. Handlers must be **idempotent**.
+
 ## Embedded Libraries vs. Daemon SDKs
 
 SnerdMQ offers two ways to use the queue engine:
