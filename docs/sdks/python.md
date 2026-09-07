@@ -43,10 +43,19 @@ async def main():
         print(f"Failed after all retries: {data}")
     queue.register_max_retry_handler('send_email', handle_failed)
 
-    await queue.start_listening()
+    try:
+        await queue.start_listening()
+    except asyncio.CancelledError:
+        pass
+    finally:
+        print("Shutting down SnerdMQ...")
+        await queue.shutdown()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
 ```
 
 ## API Reference

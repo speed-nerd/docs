@@ -58,7 +58,10 @@ func main() {
         return nil
     })
 
-    queue.Wait()
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+    <-sigs
+    queue.Shutdown()
 }
 ```
 
@@ -114,9 +117,9 @@ Starts the built-in React dashboard.
 
 Streams a progress update from within a handler.
 
-### `queue.Wait()`
+### `queue.Shutdown()`
 
-Blocks the main thread (keeps the program running).
+Gracefully shuts down the queue and background daemon.
 
 ## Embedded Library: `snerd-go`
 
