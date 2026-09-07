@@ -40,8 +40,9 @@ queue.registerMaxRetryHandler('send_email', async (data) => {
     console.error(`Failed after all retries: ${JSON.stringify(data)}`);
 });
 
-// 5. Clean shutdown
+// 5. Clean shutdown (Required)
 process.on('SIGINT', () => {
+    console.log("Shutting down SnerdMQ...");
     queue.shutdown();
     process.exit(0);
 });
