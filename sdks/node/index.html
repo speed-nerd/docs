@@ -1508,11 +1508,12 @@
 <a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`Failed after all retries: </span><span class="si">${</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="p">});</span>
 <a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1">// 5. Clean shutdown</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1">// 5. Clean shutdown (Required)</span>
 <a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;SIGINT&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="nx">queue</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">();</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">    </span><span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="p">});</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Shutting down SnerdMQ...&quot;</span><span class="p">);</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">    </span><span class="nx">queue</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">();</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">    </span><span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="p">});</span>
 </code></pre></div>
 <h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
 <h3 id="new-snerdqueueoptions"><code>new SnerdQueue(options?)</code><a class="headerlink" href="#new-snerdqueueoptions" title="Permanent link">&para;</a></h3>

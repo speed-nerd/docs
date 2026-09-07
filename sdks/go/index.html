@@ -842,10 +842,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queuewait" class="md-nav__link">
+  <a href="#queueshutdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        queue.Wait()
+        queue.Shutdown()
       
     </span>
   </a>
@@ -1407,10 +1407,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queuewait" class="md-nav__link">
+  <a href="#queueshutdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        queue.Wait()
+        queue.Shutdown()
       
     </span>
   </a>
@@ -1525,8 +1525,11 @@
 <a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
 <a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="p">})</span>
 <a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
-<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="nx">queue</span><span class="p">.</span><span class="nx">Wait</span><span class="p">()</span>
-<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="p">}</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="nx">sigs</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Signal</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">    </span><span class="nx">signal</span><span class="p">.</span><span class="nx">Notify</span><span class="p">(</span><span class="nx">sigs</span><span class="p">,</span><span class="w"> </span><span class="nx">syscall</span><span class="p">.</span><span class="nx">SIGINT</span><span class="p">,</span><span class="w"> </span><span class="nx">syscall</span><span class="p">.</span><span class="nx">SIGTERM</span><span class="p">)</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">    </span><span class="o">&lt;-</span><span class="nx">sigs</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">    </span><span class="nx">queue</span><span class="p">.</span><span class="nx">Shutdown</span><span class="p">()</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
 <h3 id="newsnerdqueueconfig"><code>NewSnerdQueue(config?)</code><a class="headerlink" href="#newsnerdqueueconfig" title="Permanent link">&para;</a></h3>
@@ -1563,8 +1566,8 @@
 <p>Starts the built-in React dashboard.</p>
 <h3 id="queueyieldprogressctx-message"><code>queue.YieldProgress(ctx, message)</code><a class="headerlink" href="#queueyieldprogressctx-message" title="Permanent link">&para;</a></h3>
 <p>Streams a progress update from within a handler.</p>
-<h3 id="queuewait"><code>queue.Wait()</code><a class="headerlink" href="#queuewait" title="Permanent link">&para;</a></h3>
-<p>Blocks the main thread (keeps the program running).</p>
+<h3 id="queueshutdown"><code>queue.Shutdown()</code><a class="headerlink" href="#queueshutdown" title="Permanent link">&para;</a></h3>
+<p>Gracefully shuts down the queue and background daemon.</p>
 <h2 id="embedded-library-snerd-go">Embedded Library: <code>snerd-go</code><a class="headerlink" href="#embedded-library-snerd-go" title="Permanent link">&para;</a></h2>
 <p>For pure Go applications that don't need the Rust daemon, use the embedded library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/speed-nerd/snerd-go
