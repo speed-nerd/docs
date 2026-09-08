@@ -167,3 +167,41 @@ SnerdQueue queue = new SnerdQueue(null, "/var/data/snerd");
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```java
+import com.snerdmq.SnerdQueue;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        SnerdQueue queue = new SnerdQueue("./.snerdata", null, 1);
+
+        // Email Workers
+        queue.registerHandler("send_email", data -> {
+            System.out.println("Sending email to " + data.get("email") + "...");
+        });
+
+        queue.registerMaxRetryHandler("send_email", data -> {
+            System.out.println("Email to " + data.get("email") + " failed permanently. Dead letter processing...");
+        });
+
+        // Image Workers
+        queue.registerHandler("process_image", data -> {
+            System.out.println("Processing image " + data.get("imageId") + "...");
+        });
+
+        queue.startDashboard(8080);
+
+        // Graceful shutdown
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            queue.shutdown();
+        }));
+
+        queue.startListening();
+    }
+}
+```

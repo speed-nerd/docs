@@ -160,3 +160,49 @@ const queue = new SnerdQueue({
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```typescript
+import { SnerdQueue } from 'snerdmq-node';
+
+const queue = new SnerdQueue({ storagePath: './.snerdata' });
+
+function initEmailWorkers() {
+    queue.registerHandler('send_email', async (data) => {
+        console.log(`Sending email to ${data.email}...`);
+    });
+    queue.registerMaxRetryHandler('send_email', async (payload) => {
+        // Payload includes taskId, taskType, and data
+        console.log(`Email to ${payload.data.email} failed permanently. Dead letter processing...`);
+    });
+}
+
+function initImageWorkers() {
+    queue.registerHandler('process_image', async (data) => {
+        console.log(`Processing image ${data.imageId}...`);
+    });
+}
+
+async function main() {
+    initEmailWorkers();
+    initImageWorkers();
+
+    queue.startDashboard(8080);
+
+    // Keep process alive and handle shutdown
+    process.on('SIGINT', async () => {
+        await queue.shutdown();
+        process.exit(0);
+    });
+    process.on('SIGTERM', async () => {
+        await queue.shutdown();
+        process.exit(0);
+    });
+}
+
+main();
+```

@@ -156,3 +156,52 @@ using var queue = new SnerdQueue(null, "/var/data/snerd");
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```csharp
+using System;
+using System.Threading.Tasks;
+using SnerdMQ;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        var queue = new SnerdQueue(storagePath: "./.snerdata");
+
+        // Email Workers
+        queue.RegisterHandler("send_email", async (data) =>
+        {
+            var email = (string)data["email"];
+            Console.WriteLine($"Sending email to {email}...");
+        });
+
+        queue.RegisterMaxRetryHandler("send_email", async (data) =>
+        {
+            var email = (string)data["email"];
+            Console.WriteLine($"Email to {email} failed permanently. Dead letter processing...");
+        });
+
+        // Image Workers
+        queue.RegisterHandler("process_image", async (data) =>
+        {
+            Console.WriteLine($"Processing image {(string)data["imageId"]}...");
+        });
+
+        queue.StartDashboard(8080);
+
+        // Graceful shutdown
+        Console.CancelKeyPress += (s, e) =>
+        {
+            e.Cancel = true;
+            queue.Shutdown();
+        };
+
+        await queue.StartListening();
+    }
+}
+```

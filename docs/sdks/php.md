@@ -153,3 +153,49 @@ $queue = new SnerdQueue(null, "/var/data/snerd");
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Snerd\SnerdQueue;
+
+$queue = new SnerdQueue(['storage_path' => './.snerdata']);
+
+$queue->registerHandler('send_email', function($data) {
+    echo "Sending email to {$data['email']}...
+";
+});
+
+$queue->registerMaxRetryHandler('send_email', function($data) {
+    echo "Email to {$data['email']} failed permanently. Dead letter processing...
+";
+});
+
+$queue->registerHandler('process_image', function($data) {
+    echo "Processing image {$data['imageId']}...
+";
+});
+
+$queue->startDashboard(8080);
+
+// Graceful shutdown
+if (function_exists('pcntl_signal')) {
+    pcntl_async_signals(true);
+    pcntl_signal(SIGINT, function() use ($queue) {
+        $queue->shutdown();
+        exit;
+    });
+    pcntl_signal(SIGTERM, function() use ($queue) {
+        $queue->shutdown();
+        exit;
+    });
+}
+
+$queue->listenLoop();
+```

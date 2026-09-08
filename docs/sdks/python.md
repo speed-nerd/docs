@@ -170,3 +170,41 @@ queue = SnerdQueue(storage_path='/var/data/snerd')
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```python
+import asyncio
+from snerdmq import SnerdQueue
+
+queue = SnerdQueue(storage_path="./.snerdata")
+
+async def send_email(data):
+    print(f"Sending email to {data['email']}...")
+
+async def dlq_send_email(data):
+    print(f"Email to {data['email']} failed permanently. Dead letter processing...")
+
+async def process_image(data):
+    print(f"Processing image {data['imageId']}...")
+
+def init_workers():
+    queue.register_handler('send_email', send_email)
+    queue.register_max_retry_handler('send_email', dlq_send_email)
+    queue.register_handler('process_image', process_image)
+
+async def main():
+    init_workers()
+    queue.start_dashboard(8080)
+    await queue.start_listening()
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        # Gracefully shut down on Ctrl+C
+        queue.shutdown()
+```

@@ -178,3 +178,62 @@ queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
 ```
 
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
+
+
+## Architecture Best Practices
+
+When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	snerdmq "github.com/speed-nerd/snerdmq-go"
+)
+
+var queue *snerdmq.SnerdQueue
+
+func initEmailWorkers() {
+	queue.RegisterHandler("send_email", func(ctx context.Context, data map[string]interface{}) error {
+		log.Printf("Sending email to %s...", data["email"])
+		return nil
+	})
+	queue.RegisterMaxRetryHandler("send_email", func(ctx context.Context, data map[string]interface{}) error {
+		log.Printf("Email to %s failed permanently. Dead letter processing...", data["email"])
+		return nil
+	})
+}
+
+func initImageWorkers() {
+	queue.RegisterHandler("process_image", func(ctx context.Context, data map[string]interface{}) error {
+		log.Printf("Processing image %s...", data["imageId"])
+		return nil
+	})
+}
+
+func main() {
+	queue = snerdmq.NewSnerdQueue(snerdmq.SnerdQueueOptions{ StoragePath: "./.snerdata" })
+	
+	initEmailWorkers()
+	initImageWorkers()
+
+	queue.StartDashboard(8080)
+	
+	if err := queue.StartListening(); err != nil {
+		log.Fatalf("Failed to start daemon: %v", err)
+	}
+
+	// Wait for termination signal
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	<-sigChan
+
+	// Manually shut down the queue safely
+	queue.Shutdown()
+}
+```
