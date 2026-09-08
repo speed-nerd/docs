@@ -907,6 +907,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#architecture-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1433,6 +1444,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#architecture-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1564,6 +1586,39 @@
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">)</span>
 </code></pre></div>
 <p>A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.</p>
+<h2 id="architecture-best-practices">Architecture Best Practices<a class="headerlink" href="#architecture-best-practices" title="Permanent link">&para;</a></h2>
+<p>When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via <code>RegisterMaxRetryHandler</code>, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">require</span><span class="w"> </span><span class="s1">&#39;snerdmq&#39;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">SnerdQueue</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">storage_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./.snerdata&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">init_email_workers</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="n">queue</span><span class="o">.</span><span class="n">register_handler</span><span class="p">(</span><span class="s1">&#39;send_email&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="o">|</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Sending email to </span><span class="si">#{</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;email&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">...&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="k">end</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="n">queue</span><span class="o">.</span><span class="n">register_max_retry_handler</span><span class="p">(</span><span class="s1">&#39;send_email&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="o">|</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Email to </span><span class="si">#{</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;email&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2"> failed permanently. Dead letter processing...&quot;</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">  </span><span class="k">end</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="k">end</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="k">def</span><span class="w"> </span><span class="nf">init_image_workers</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">  </span><span class="n">queue</span><span class="o">.</span><span class="n">register_handler</span><span class="p">(</span><span class="s1">&#39;process_image&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="o">|</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Processing image </span><span class="si">#{</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;imageId&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">...&quot;</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">  </span><span class="k">end</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="k">end</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="n">init_email_workers</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="n">init_image_workers</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="n">queue</span><span class="o">.</span><span class="n">start_dashboard</span><span class="p">(</span><span class="mi">8080</span><span class="p">)</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="c1"># Trap signals for graceful shutdown</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="nb">trap</span><span class="p">(</span><span class="s1">&#39;INT&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">queue</span><span class="o">.</span><span class="n">shutdown</span><span class="p">;</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="nb">trap</span><span class="p">(</span><span class="s1">&#39;TERM&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">queue</span><span class="o">.</span><span class="n">shutdown</span><span class="p">;</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="n">queue</span><span class="o">.</span><span class="n">start_listening</span>
+</code></pre></div>
 
 
 
