@@ -1,6 +1,6 @@
 # Architecture
 
-SnerdMQ uses an **embedded sidecar** architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. Each daemon exclusively owns its storage directory — scale by giving each server its own queue and storage (sharding), never by pointing multiple instances at one shared file.
+SnerdMQ uses an **embedded sidecar** architecture. Instead of running a separate queue server (like Redis or RabbitMQ), each application instance spawns its own lightweight Rust daemon as a child process. SnerdMQ scales by **sharding** — a single logical queue directory contains multiple independent shards, and each daemon exclusively claims ownership of one or more shards.
 
 ## Overview
 
@@ -158,7 +158,7 @@ All log access is protected by OS-level file locks:
 Locks serve two purposes:
 
 - **Write atomicity** — short-lived locks serialize appends and compaction, so the log is never corrupted.
-- **Exclusive ownership** — at startup, every daemon/queue instance takes a persistent exclusive lock on its storage (`<storage>/.lock` for the daemon, `<tasks.log>.lock` for the embedded libraries). A second instance on the same storage refuses to start, guaranteeing exactly one executor per queue. This is why the scaling model is sharding — one queue per server, each with its own storage (see [Deployment](production/deployment.md)).
+- **Exclusive ownership** — at startup, every daemon inspects a central `membership.json` (protected by a short-hold `.membership.lock`) to claim unowned shards. Once claimed, the daemon takes a persistent exclusive lock on that specific shard (`<storage>/shard-N/.lock`). A second daemon cannot process the same shard, guaranteeing exactly one executor per shard. This allows multiple daemons to point to the exact same shared network storage directory and safely scale out. (see [Deployment](production/deployment.md)).
 
 ## Task Lifecycle
 
@@ -196,6 +196,13 @@ Locks serve two purposes:
 5. **Timed Out** — Execution exceeded `max_execution_seconds`; treated as a failure
 6. **Retry** — Task's `retry_after_time` is set; it will be re-dispatched after the backoff
 7. **Dead Letter Queue** — All retries exhausted; `max_retries_reached` event is fired
+
+### At-Least-Once Delivery Guarantee
+
+If a daemon crashes ungracefully (e.g., `SIGKILL`, OOM, or power failure) while a task is in the **Active** state, the task is never marked as completed. When another daemon in the cluster eventually claims the crashed daemon's abandoned shard, it will re-execute all pending tasks in the shard's log, including the one that was mid-flight.
+
+!!! danger "Idempotency Requirement"
+    Because of crash-takeovers, SnerdMQ guarantees **at-least-once** delivery. Your job handlers **must** be idempotent. If a job is executed twice, it should safely no-op or overwrite the previous attempt without corrupting your system.
 
 ## Embedded Libraries vs. Daemon SDKs
 

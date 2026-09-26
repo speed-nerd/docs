@@ -160,6 +160,48 @@ Here's how to receive SnerdMQ webhook dispatches in your server:
 
 ## Use Cases
 
+- **Stateless Polyglot Workers** — Run the robust SnerdMQ daemon or `snerd-go` embedded engine as the broker, and point webhooks to stateless, fast microservices in Rust, C++, or any language. SnerdMQ handles persistence, timeouts, and retries natively, while your worker remains a pure HTTP function.
+  
+  **Go (Producer & Broker):**
+  ```go
+  queue := snerd.NewAnyQueue("go-broker", 100, 1*time.Second)
+  webhookURL := "http://localhost:3000/api/worker/send-push"
+  task, _ := snerd.CreateTask("SEND_PUSH", map[string]interface{}{"user_id": 1001}, 3, 0.5)
+  task.WebhookUrl = &webhookURL
+  queue.EnqueueSnerdTask(task)
+  ```
+
+  **Rust (Worker Pools Broker Receiver):**
+  ```rust
+  #[derive(Deserialize)]
+  #[serde(rename_all = "camelCase")]
+  struct SnerdWebhookPayload {
+      task_id: String,
+      task_type: String,
+      #[serde(rename = "data")]
+      parameters: String, 
+  }
+
+  // The receiver places the webhook into an isolated snerd-rust pool!
+  async fn handle_send_push(
+      State(queue): State<Arc<SnerdQueue>>,
+      Json(payload): Json<SnerdWebhookPayload>
+  ) -> StatusCode {
+      
+      // 1. Enqueue it in an isolated pool for reliable execution and retry recovery
+      let mut task = RetryableTask::new(
+          payload.task_id, payload.task_type, payload.parameters,
+          3, 1.0, None, None, None, None, None, None, None, None,
+          Some("push-pool".to_string()) // pool
+      );
+      
+      // 2. Acknowledge the HTTP request immediately
+      match queue.enqueue(task) {
+          Ok(_) => StatusCode::OK,
+          Err(_) => StatusCode::INTERNAL_SERVER_ERROR
+      }
+  }
+  ```
 - **Serverless workers** — Dispatch tasks to AWS Lambda, Cloudflare Workers, or Vercel Functions
 - **Cross-service orchestration** — Trigger work in a different microservice
 - **CI/CD pipelines** — Fire webhooks to Jenkins, GitHub Actions, or CircleCI

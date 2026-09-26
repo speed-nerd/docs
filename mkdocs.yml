@@ -48,6 +48,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Changelog & Releases: changelog.md
   - Getting Started: getting-started.md
   - Architecture: architecture.md
   - Features:
@@ -57,6 +58,7 @@ nav:
     - Webhooks: features/webhooks.md
     - Deduplication: features/deduplication.md
     - Priority Queue: features/priority-queue.md
+    - Worker Pools: features/worker-pools.md
   - SDKs:
     - Node.js / TypeScript: sdks/node.md
     - Python: sdks/python.md
@@ -69,6 +71,8 @@ nav:
     - snerd-go (Go): embedded/snerd-go.md
     - snerd-rust (Rust): embedded/snerd-rust.md
   - Production:
+    - Sharded Queues: production/sharded-queues.md
+    - Cross-Server Deployment: production/cross-server.md
     - Deployment: production/deployment.md
     - Monitoring: production/monitoring.md
     - Troubleshooting: production/troubleshooting.md

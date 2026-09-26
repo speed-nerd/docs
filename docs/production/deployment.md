@@ -52,60 +52,52 @@ volumes:
 
 ## Distributed Deployment (Multi-Node)
 
-The daemon takes an **exclusive lock on its storage directory** at startup, so multiple replicas cannot process the same queue concurrently — a second daemon on the same storage refuses to start. This is deliberate: two processors on the same job log would race and double-execute jobs.
+SnerdMQ is designed to scale horizontally across multiple instances (e.g., Kubernetes pods or EC2 instances) while acting as a single, unified queue. This is achieved via **Sharding**.
 
-Scaling out therefore means **one queue per replica**, each with its own storage. Your load balancer routes requests across replicas, and every replica processes the jobs it enqueued:
+Instead of giving each replica its own isolated storage directory, all replicas point to the **exact same shared storage directory** (e.g., an AWS EFS mount). SnerdMQ automatically divides the queue into shards and negotiates ownership between the active replicas using OS-level file locking and a central `membership.json` file.
 
 === "Node.js"
     ```typescript
-    // Each replica runs its own daemon on its own storage (local disk works fine)
-    const queue = new SnerdQueue({ storagePath: '/var/data/snerd' });
+    // All replicas use the exact same shared EFS mount
+    const queue = new SnerdQueue({ storagePath: '/mnt/efs/snerd-queue' });
     ```
 
 === "Python"
     ```python
-    # Each replica runs its own daemon on its own storage (local disk works fine)
-    queue = SnerdQueue(storage_path='/var/data/snerd')
+    # All replicas use the exact same shared EFS mount
+    queue = SnerdQueue(storage_path='/mnt/efs/snerd-queue')
     ```
 
 === "Go"
     ```go
-    // Each replica runs its own daemon on its own storage (local disk works fine)
+    // All replicas use the exact same shared EFS mount
     queue, _ := snerdmq.NewSnerdQueue(snerdmq.SnerdQueueConfig{
-        StoragePath: "/var/data/snerd",
+        StoragePath: "/mnt/efs/snerd-queue",
     })
     ```
 
-!!! warning "Multi-worker processes"
-    The same lock applies *inside* a machine: with Gunicorn/Uvicorn workers, Node `cluster` forks, or Puma clustered workers, every worker is a separate process that spawns its own daemon. Give each worker its own `storagePath`, or run a single dedicated worker process for background jobs.
+### How to Scale
 
-### Durable storage for a single instance
+1. **Create the shared storage**: Mount a POSIX-compliant distributed filesystem (like AWS EFS) to your containers.
+2. **Provision Shards**: By default, a queue has 1 shard. Increase the shard count to match or exceed your desired peak replica count using the CLI:
+   ```bash
+   snerdmq add-shards 10 /mnt/efs/snerd-queue
+   ```
+3. **Deploy Replicas**: As you spin up new containers, they will inspect the `membership.json` file in the shared directory, spot the unowned shards, and automatically claim them.
 
-A shared network volume (AWS EFS, NFS) is still useful when **one** instance needs its queue state to survive restarts — e.g. a container that gets rescheduled but must keep its pending jobs:
+If a replica crashes or scales down, its lease on the shard will expire, and another healthy replica will automatically take over the abandoned shard.
 
-```yaml
-# Kubernetes: single-replica deployment with a durable volume
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-worker
-spec:
-  replicas: 1  # One daemon owns the storage; scale by sharding, not replicas
-  template:
-    spec:
-      containers:
-        - name: app
-          image: my-app:latest
-          volumeMounts:
-            - name: snerd-storage
-              mountPath: /var/data/snerd
-      volumes:
-        - name: snerd-storage
-          persistentVolumeClaim:
-            claimName: snerd-pvc
-```
+!!! warning "Idempotency and Filesystems"
+    Cross-server sharding requires strict handler **idempotency** (due to crash takeovers) and a **POSIX-compliant distributed filesystem** (like EFS, not S3). 
+    **Read the full [Cross-Server Deployment Guide](cross-server.md) before deploying.**
 
-For multi-replica services, prefer per-replica local storage (emptyDir or the container filesystem) — each replica's queue is independent by design.
+### Multi-Worker Processes (Single Machine)
+
+If you are running a multi-process architecture on a *single* machine (e.g., Node `cluster`, Gunicorn workers, Puma), you can apply the exact same sharding pattern using your local disk:
+
+1. Run `snerdmq add-shards 4 .snerdata`
+2. Start your 4 Gunicorn workers pointing at `.snerdata`.
+3. The 4 workers will automatically negotiate and claim 1 shard each, running 4 parallel queue executors safely on the same local directory.
 
 ## Storage Path Configuration
 

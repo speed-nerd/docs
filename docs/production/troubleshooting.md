@@ -48,7 +48,7 @@ Common issues and their solutions when running SnerdMQ in production.
 2. **Stale lock file** — On some systems, a crash can leave a stale lock:
     ```bash
     # Remove the queue file (WARNING: loses pending tasks)
-    rm .snerdata/tasks/tasks.log
+    rm .snerdata/shard-0/tasks/tasks.log
     ```
 
 3. **NFS/EFS lock issues** — If you point a single instance at a network drive for durable storage, ensure `flock` is supported:
@@ -56,7 +56,35 @@ Common issues and their solutions when running SnerdMQ in production.
     # AWS EFS supports flock natively
     # Some NFS implementations may not — check your provider
     ```
-    Note: network volumes are for single-instance durability only. Two instances on the same storage fail fast by design (exclusive lock) — scale by sharding, not by sharing.
+    Note: Network volumes are heavily reliant on `flock`. Make sure your filesystem supports it (e.g. AWS EFS), otherwise you risk split-brain queue corruption.
+
+## Daemon is in Standby Mode
+
+**Symptom:** The daemon logs `[Snerd] No shards owned by this instance` on every enqueue attempt.
+
+**Cause:** The daemon booted, checked `membership.json`, and found that all shards in the queue are currently claimed and actively renewed by other healthy daemons. Because it owns zero shards, it cannot route any tasks, so it rejects enqueues.
+
+**Solutions:**
+
+1. **Increase the shard count:** Use the CLI to provision more shards so the standby daemon has something to claim:
+    ```bash
+    snerdmq add-shards 2 .snerdata
+    ```
+2. **Accept standby behavior:** If this is an autoscaling worker, it is perfectly safe for it to idle. It will automatically take over a shard if another worker crashes and its lease expires.
+
+## Stale Leases & Split-Brain
+
+**Symptom:** Tasks are being executed twice by two different servers simultaneously, or daemons are constantly pausing.
+
+**Cause:** Server A's clock is running significantly faster than Server B's. Server A looks at Server B's lease in `membership.json` and incorrectly determines that the lease has expired, initiating a takeover.
+
+**Solutions:**
+
+1. **Run NTP:** Ensure `chrony` or `systemd-timesyncd` is running on all servers.
+2. **Increase Skew Margin:** If clock drift is unavoidable, widen the grace period via environment variable:
+    ```bash
+    export SNERD_CLOCK_SKEW_MARGIN=15
+    ```
 
 ## High Memory Usage
 

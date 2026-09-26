@@ -13,6 +13,9 @@ When a task handler throws an error (exception, rejected promise, or non-zero ex
 
 If the handler succeeds on retry, the task is marked complete and removed from the queue. If it fails again, the cycle repeats until `max_retries` is exhausted.
 
+!!! danger "At-Least-Once Delivery & Idempotency"
+    If the worker crashes completely (e.g., `SIGKILL`, OOM) while executing a task, another node in the cluster will claim the shard and re-execute the abandoned task. This means tasks can be executed more than once. **Your job handlers must be idempotent.**
+
 ## Configuration
 
 | Parameter | Type | Default | Description |
