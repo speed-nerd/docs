@@ -395,10 +395,65 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-job-chaining-dags" class="md-nav__link">
+  <a href="#3-job-chaining-workflows-dags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Job Chaining (DAGs)
+        3. Job Chaining &amp; Workflows (DAGs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cron-scheduled-jobs-delayed-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 🕒 Cron &amp; Scheduled Jobs (Delayed Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-hard-timeouts-cancellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 🛑 Hard Timeouts &amp; Cancellation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-the-dead-letter-queue-dlq-replay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 🪦 The Dead Letter Queue (DLQ) &amp; Replay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-webhook-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 🌐 Webhook Callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-dashboard-authentication-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 🔒 Dashboard Authentication &amp; Controls
       
     </span>
   </a>
@@ -1393,10 +1448,65 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-job-chaining-dags" class="md-nav__link">
+  <a href="#3-job-chaining-workflows-dags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Job Chaining (DAGs)
+        3. Job Chaining &amp; Workflows (DAGs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cron-scheduled-jobs-delayed-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 🕒 Cron &amp; Scheduled Jobs (Delayed Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-hard-timeouts-cancellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 🛑 Hard Timeouts &amp; Cancellation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-the-dead-letter-queue-dlq-replay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 🪦 The Dead Letter Queue (DLQ) &amp; Replay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-webhook-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 🌐 Webhook Callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-dashboard-authentication-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 🔒 Dashboard Authentication &amp; Controls
       
     </span>
   </a>
@@ -1455,21 +1565,98 @@
 <p>SnerdMQ can now scale horizontally across multiple instances while acting as a single, unified queue. 
 - <strong>Daemon Sharding:</strong> Deploy multiple <code>snerdmq</code> daemons pointing to the same shared network directory (e.g., AWS EFS). They will automatically partition the workload using a robust <code>membership.json</code> lease and 2-phase OS flocking protocol.
 - <strong>Embedded Sharding (<code>snerd-rust</code> &amp; <code>snerd-go</code>):</strong> You can now natively shard workloads directly within the raw embedded engines across multiple processes on the same machine, safely dividing tasks without network hops.</p>
+<p><strong>Example (SDK - Booting a Sharded Daemon):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Boot a multi-tenant daemon that owns up to 4 shards locally</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">queue</span> <span class="o">=</span> <span class="n">SnerdQueue</span><span class="p">(</span><span class="n">max_local_shards</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Example (Embedded Sharding in Rust):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Create a 10-shard queue safely embedded inside your Rust process</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">let</span><span class="w"> </span><span class="n">sharded_queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SnerdShardedQueue</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Path</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;.snerdata&quot;</span><span class="p">),</span><span class="w"> </span><span class="mi">10</span><span class="p">).</span><span class="k">await</span><span class="p">;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">// Enqueue jobs natively (tasks are instantly partitioned)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">sharded_queue</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">).</span><span class="k">await</span><span class="p">.</span><span class="n">unwrap</span><span class="p">();</span>
+</code></pre></div></p>
 <h4 id="2-worker-pools-resource-isolation">2. Worker Pools (Resource Isolation)<a class="headerlink" href="#2-worker-pools-resource-isolation" title="Permanent link">&para;</a></h4>
-<p>You can now partition your queue execution resources to ensure high-throughput background jobs do not starve high-priority user-facing tasks.
-- Create distinct concurrency limits for different pools (e.g., <code>default: 100</code>, <code>urgent: 50</code>, <code>ai_generation: 10</code>).
-- <strong>Shared Worker Pools:</strong> When using Embedded Sharding, Snerd natively shares your worker pools across all claimed shards, ensuring your strict concurrency limits are enforced process-wide to prevent resource explosion.
-- <strong>Webhook Integration:</strong> Use Worker Pools with Webhook tasks to build fault-tolerant Polyglot architectures (e.g., route Python tasks to a dedicated Rust worker pool).</p>
-<h4 id="3-job-chaining-dags">3. Job Chaining (DAGs)<a class="headerlink" href="#3-job-chaining-dags" title="Permanent link">&para;</a></h4>
-<p>You can now orchestrate complex workflows by defining dependencies between tasks using <code>trigger_after_ids</code>. 
-- <strong>Linear Pipelines:</strong> Run tasks sequentially (Task A → Task B).
-- <strong>Fan-In:</strong> Wait for multiple tasks to finish before triggering the final step (Task A, B, C → Task D).
-- Tasks are automatically unblocked and executed the moment all of their parent dependencies succeed.</p>
+<p>You can now partition your queue execution resources to ensure high-throughput background jobs do not starve high-priority user-facing tasks.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Dedicate a task to the &#39;urgent&#39; worker pool</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;payment-123&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;process_payment&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">pool</span><span class="o">=</span><span class="s1">&#39;urgent&#39;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
+</code></pre></div>
+<em>Run the daemon with <code>SNERD_POOLS="default:100,urgent:50"</code> to allocate workers.</em></p>
+<h4 id="3-job-chaining-workflows-dags">3. Job Chaining &amp; Workflows (DAGs)<a class="headerlink" href="#3-job-chaining-workflows-dags" title="Permanent link">&para;</a></h4>
+<p>You can now orchestrate complex workflows by defining dependencies between tasks using <code>trigger_after_ids</code>. Tasks are automatically unblocked and executed the moment all of their parent dependencies succeed.</p>
+<p><strong>Example (Fan-In Chaining):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Block this task from executing until both parent tasks successfully finish</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;final-report&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;generate_pdf&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;report_id&#39;</span><span class="p">:</span> <span class="mi">99</span><span class="p">},</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">trigger_after_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data-fetch-1&#39;</span><span class="p">,</span> <span class="s1">&#39;data-fetch-2&#39;</span><span class="p">]</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="4-cron-scheduled-jobs-delayed-execution">4. 🕒 Cron &amp; Scheduled Jobs (Delayed Execution)<a class="headerlink" href="#4-cron-scheduled-jobs-delayed-execution" title="Permanent link">&para;</a></h4>
+<p>Adding the ability to schedule jobs in the future.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Run every day at 08:00</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;daily-digest&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;send_email&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;daily&#39;</span><span class="p">},</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">cron</span><span class="o">=</span><span class="s1">&#39;0 8 * * *&#39;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="5-hard-timeouts-cancellation">5. 🛑 Hard Timeouts &amp; Cancellation<a class="headerlink" href="#5-hard-timeouts-cancellation" title="Permanent link">&para;</a></h4>
+<p>Protect developers from their own bad code taking down the entire worker pool.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Forcefully kill if running &gt; 5 mins</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;risky-task&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;process_data&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{},</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">max_execution_seconds</span><span class="o">=</span><span class="mi">300</span> 
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="6-the-dead-letter-queue-dlq-replay">6. 🪦 The Dead Letter Queue (DLQ) &amp; Replay<a class="headerlink" href="#6-the-dead-letter-queue-dlq-replay" title="Permanent link">&para;</a></h4>
+<p>Introduce a formal "Dead Letter" storage state. Grab permanently failed jobs and inject them back into the active queue.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Catch tasks that have permanently failed (Dead Letter Queue)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_failed_email</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Email task failed after all retries! Data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">queue</span><span class="o">.</span><span class="n">register_max_retry_handler</span><span class="p">(</span><span class="s1">&#39;send_email&#39;</span><span class="p">,</span> <span class="n">handle_failed_email</span><span class="p">)</span>
+</code></pre></div>
+<em>(CLI replay command: <code>snerdmq replay --type="send_email"</code>)</em></p>
+<h4 id="7-webhook-callbacks">7. 🌐 Webhook Callbacks<a class="headerlink" href="#7-webhook-callbacks" title="Permanent link">&para;</a></h4>
+<p>Instead of executing a local codebase, SnerdMQ can make a POST request to a provided URL when it's time to process the job. Unlocks integration with Serverless platforms.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Execute via HTTP instead of local handlers</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;serverless-task&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;resize_image&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;img&#39;</span><span class="p">:</span> <span class="s1">&#39;cat.jpg&#39;</span><span class="p">},</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">webhook_url</span><span class="o">=</span><span class="s1">&#39;https://api.example.com/webhooks/snerdmq&#39;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="8-dashboard-authentication-controls">8. 🔒 Dashboard Authentication &amp; Controls<a class="headerlink" href="#8-dashboard-authentication-controls" title="Permanent link">&para;</a></h4>
+<p>Add Basic Auth / JWT login to the Rust dashboard, and add action buttons to manually Pause, Cancel, or Retry jobs directly from the browser interface.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Secure the live dashboard with Basic Auth credentials</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">queue</span><span class="o">.</span><span class="n">start_dashboard</span><span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">auth_username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">auth_password</span><span class="o">=</span><span class="s2">&quot;supersecretpassword&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span>
+</code></pre></div></p>
 <h3 id="ecosystem-version-alignment">📦 Ecosystem Version Alignment<a class="headerlink" href="#ecosystem-version-alignment" title="Permanent link">&para;</a></h3>
 <p>To support these features, the SnerdMQ ecosystem has been updated to the following versions:
 - <strong>Core Embedded Engines</strong> (<code>snerd-rust</code>, <code>snerd-go</code>): <code>v0.3.0</code>
 - <strong>SnerdMQ IPC Daemon</strong>: <code>v0.3.0</code>
-- <strong>Language SDKs</strong>: Updated to support the new features. Depending on the SDK, these were bumped to <code>v0.4.0</code> (Node, Python, Ruby, PHP) or <code>v1.1.0</code> (Java, C#, Go SDKs).</p>
+- <strong>Language SDKs</strong>: Updated to support the new features. Depending on the SDK, these were bumped to <code>v0.4.1</code> (Node, Python, Ruby, PHP) or <code>v1.1.1</code> (Java, C#, Go SDKs).</p>
 
 
 
