@@ -172,6 +172,115 @@ queue = SnerdQueue(storage_path='/var/data/snerd')
 A shared network drive (AWS EFS or NFS) is still a good home for that storage when a single instance needs durable state across container restarts.
 
 
+
+
+## Advanced Orchestration (v0.3.0 Features)
+
+SnerdMQ v0.3.0 introduced powerful new primitives for managing complex background jobs. Below are realistic, production-like scenarios showing how to utilize these features in Python:
+
+```python
+# 1. Sharded Queues
+# Context: A developer needs to scale their deployment across 4 servers to handle massive load, but they don't want to use Redis.
+# How to use: Tell the daemon how many shards to claim on boot. The queue handles the OS-level locking automatically.
+
+queue = SnerdQueue(max_local_shards=4)
+```
+
+```python
+# 2. Worker Pools
+# Context: A system has both slow AI generation tasks and fast transactional emails. We want to prevent AI tasks from starving the email workers.
+
+# Enqueue an AI task to a dedicated pool
+await queue.enqueue(
+    task_id='ai-gen-123',
+    task_type='ai_generation',
+    data={'prompt': 'A majestic horse'},
+    pool='ai-pool'
+)
+
+# Enqueue an email task to a fast, urgent pool
+await queue.enqueue(
+    task_id='email-123',
+    task_type='send_email',
+    data={'to': 'user@example.com'},
+    pool='urgent'
+)
+```
+
+```python
+# 3. Job Chaining (DAGs)
+# Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
+
+# Step 1: Transcode
+await queue.enqueue(
+    task_id='transcode-1',
+    task_type='transcode_video',
+    data={'file': 'raw.mp4'}
+)
+
+# Step 2: Upload (Waits for Step 1)
+await queue.enqueue(
+    task_id='upload-1',
+    task_type='upload_s3',
+    data={'file': 'processed.mp4'},
+    trigger_after_ids=['transcode-1']
+)
+
+# Step 3: Notify (Waits for Step 2)
+await queue.enqueue(
+    task_id='notify-1',
+    task_type='send_email',
+    data={'status': 'done'},
+    trigger_after_ids=['upload-1']
+)
+```
+
+```python
+# 4. Cron & Scheduled Jobs
+# Context: A system needs to run a database cleanup script every night at midnight.
+
+await queue.enqueue(
+    task_id='db-cleanup',
+    task_type='cleanup_job',
+    data={'table': 'sessions'},
+    cron='0 0 * * *'
+)
+```
+
+```python
+# 5. Hard Timeouts
+# Context: A background worker is making an HTTP request to a flaky third-party API that might hang indefinitely. We forcefully kill it if it runs over 5 minutes.
+
+await queue.enqueue(
+    task_id='api-fetch-1',
+    task_type='fetch_data',
+    data={'endpoint': '/sync'},
+    max_execution_seconds=300
+)
+```
+
+```python
+# 6. Webhook Callbacks
+# Context: A developer is using AWS Lambda or Vercel Serverless functions and wants SnerdMQ to trigger the function via an HTTP POST request rather than running a local worker.
+
+await queue.enqueue(
+    task_id='serverless-job',
+    task_type='resize_image',
+    data={'img': 'cat.jpg'},
+    webhook_url='https://api.example.com/webhook/snerdmq'
+)
+```
+
+```python
+# 7. The Dead Letter Queue (DLQ)
+# Context: A task has failed its maximum number of retries (e.g., the SendGrid API is down for hours). The developer needs to catch this to alert the team on Slack.
+
+async def alert_slack_func(data):
+    print(f"Task permanently failed! Alerting Slack with data: {data}")
+
+queue.register_max_retry_handler('send_email', alert_slack_func)
+```
+
 ## Architecture Best Practices
 
 When building production applications with SnerdMQ, it is recommended to initialize the queue as a Singleton, isolate your domain workers into separate files/functions, use Dead Letter Queues (DLQ) for failed tasks via `RegisterMaxRetryHandler`, and ensure manual graceful shutdown. The embedded Dashboard UI can also be easily served from the same instance.
