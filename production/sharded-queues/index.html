@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://speed-nerd.github.io/docs/features/rate-limiting/">
+        <link rel="canonical" href="https://speed-nerd.github.io/docs/production/sharded-queues/">
       
       
-        <link rel="prev" href="../retries-and-dlq/">
+        <link rel="prev" href="../../embedded/snerd-rust/">
       
       
-        <link rel="next" href="../cron-scheduling/">
+        <link rel="next" href="../cross-server/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Rate Limiting - SnerdMQ Documentation</title>
+        <title>Sharded Queues - SnerdMQ Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rate-limiting" class="md-skip">
+        <a href="#sharded-queues" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Rate Limiting
+              Sharded Queues
             
           </span>
         </div>
@@ -367,8 +367,6 @@
       
   
   
-    
-  
   
   
     
@@ -381,11 +379,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -406,7 +406,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -424,7 +424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../retries-and-dlq/" class="md-nav__link">
+      <a href="../../features/retries-and-dlq/" class="md-nav__link">
         
   
   
@@ -449,37 +449,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Rate Limiting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../features/rate-limiting/" class="md-nav__link">
         
   
   
@@ -495,81 +468,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code Examples
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multiple-rate-limit-groups" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Rate Limit Groups
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Use Cases
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -582,7 +480,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cron-scheduling/" class="md-nav__link">
+      <a href="../../features/cron-scheduling/" class="md-nav__link">
         
   
   
@@ -610,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../webhooks/" class="md-nav__link">
+      <a href="../../features/webhooks/" class="md-nav__link">
         
   
   
@@ -638,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deduplication/" class="md-nav__link">
+      <a href="../../features/deduplication/" class="md-nav__link">
         
   
   
@@ -666,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../priority-queue/" class="md-nav__link">
+      <a href="../../features/priority-queue/" class="md-nav__link">
         
   
   
@@ -694,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../worker-pools/" class="md-nav__link">
+      <a href="../../features/worker-pools/" class="md-nav__link">
         
   
   
@@ -1100,8 +998,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1112,13 +1012,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
           <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
@@ -1139,7 +1037,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1154,10 +1052,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../production/sharded-queues/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sharded Queues
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1173,6 +1098,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Sharding?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-routing-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Routing Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-membership-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Membership Protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-out-adding-shards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling Out (Adding Shards)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standby-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standby Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handling-shutdowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Shutdowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Handling Shutdowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#at-least-once-delivery-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At-Least-Once Delivery Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedded-sharding-snerd-rust-snerd-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embedded Sharding (snerd-rust &amp; snerd-go)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1185,7 +1235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/cross-server/" class="md-nav__link">
+      <a href="../cross-server/" class="md-nav__link">
         
   
   
@@ -1213,7 +1263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/deployment/" class="md-nav__link">
+      <a href="../deployment/" class="md-nav__link">
         
   
   
@@ -1241,7 +1291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/monitoring/" class="md-nav__link">
+      <a href="../monitoring/" class="md-nav__link">
         
   
   
@@ -1269,7 +1319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -1324,10 +1374,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#why-sharding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How It Works
+        Why Sharding?
       
     </span>
   </a>
@@ -1335,10 +1385,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#storage-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        Storage Layout
       
     </span>
   </a>
@@ -1346,10 +1396,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-examples" class="md-nav__link">
+  <a href="#how-routing-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Code Examples
+        How Routing Works
       
     </span>
   </a>
@@ -1357,10 +1407,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multiple-rate-limit-groups" class="md-nav__link">
+  <a href="#the-membership-protocol" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multiple Rate Limit Groups
+        The Membership Protocol
       
     </span>
   </a>
@@ -1368,10 +1418,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
+  <a href="#scaling-out-adding-shards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Use Cases
+        Scaling Out (Adding Shards)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#standby-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standby Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handling-shutdowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Shutdowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Handling Shutdowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#at-least-once-delivery-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At-Least-Once Delivery Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedded-sharding-snerd-rust-snerd-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embedded Sharding (snerd-rust &amp; snerd-go)
       
     </span>
   </a>
@@ -1398,135 +1498,70 @@
   
 
 
-<h1 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h1>
-<p>SnerdMQ includes a built-in token-bucket rate limiter that prevents your tasks from overwhelming third-party APIs. When you're bursting hundreds of LLM generation jobs, SnerdMQ automatically pauses dispatch to prevent 429 "Too Many Requests" errors.</p>
-<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
-<p>Rate limiting in SnerdMQ uses a <strong>rolling 60-second window</strong> per group:</p>
+<h1 id="sharded-queues">Sharded Queues<a class="headerlink" href="#sharded-queues" title="Permanent link">&para;</a></h1>
+<p>SnerdMQ scales by <strong>sharding</strong>. Instead of having multiple workers pull from one massive central database, a single logical SnerdMQ queue is divided into multiple independent <strong>shards</strong> on disk. </p>
+<p>Each shard is exclusively owned and executed by exactly one daemon process.</p>
+<h2 id="why-sharding">Why Sharding?<a class="headerlink" href="#why-sharding" title="Permanent link">&para;</a></h2>
+<p>Traditional queues (like Redis, RabbitMQ, or PostgreSQL tables) suffer from <strong>lock contention</strong>: when 100 workers try to dequeue jobs simultaneously from one central list, they constantly block each other.</p>
+<p>SnerdMQ bypasses this bottleneck entirely. 
+Because each daemon exclusively owns its shards, <strong>enqueue and dequeue operations require zero network coordination and zero distributed locking.</strong> The daemon simply writes to its local shard's append-only log, yielding sub-millisecond latencies regardless of cluster size.</p>
+<h2 id="storage-layout">Storage Layout<a class="headerlink" href="#storage-layout" title="Permanent link">&para;</a></h2>
+<p>When you create a queue, SnerdMQ provisions a <code>.snerdata</code> directory containing the cluster's "brain" (<code>membership.json</code>) and the individual shard subdirectories:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.snerdata/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── .membership.lock      # OS-level flock protecting membership changes
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── membership.json       # JSON registry of shards and their current owners
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── shard-0/
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── .lock             # Exclusive lock held by the daemon owning this shard
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── tasks/
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│       └── tasks.log     # The actual append-only job log for shard-0
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── shard-1/              
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>...
+</code></pre></div>
+<h2 id="how-routing-works">How Routing Works<a class="headerlink" href="#how-routing-works" title="Permanent link">&para;</a></h2>
+<p>When your application calls <code>queue.enqueue(...)</code>, the local SDK sends the payload to its local daemon. 
+The daemon computes an <code>FNV-1a</code> hash of the <code>task_id</code> and modulo-divides it against the number of shards the daemon currently owns. </p>
+<p>The daemon writes the job to the correct shard's <code>tasks.log</code> directly. <strong>There is no cross-instance network forwarding.</strong> You must design your system such that every worker can execute every type of job.</p>
+<h2 id="the-membership-protocol">The Membership Protocol<a class="headerlink" href="#the-membership-protocol" title="Permanent link">&para;</a></h2>
+<p>Daemons do not communicate with each other over the network. They coordinate entirely through <code>membership.json</code> and OS-level file locking.</p>
 <ol>
-<li>You assign tasks to a <code>rate_limit_group</code> (e.g., <code>"openai_api"</code>)</li>
-<li>You set a <code>max_per_minute</code> cap for that group</li>
-<li>The daemon tracks execution velocity for each group</li>
-<li>When the limit is hit, further tasks in that group are <strong>paused</strong> (not dropped)</li>
-<li>As the window slides and capacity frees up, paused tasks resume dispatching</li>
+<li><strong>Claiming</strong>: On boot, a daemon opens <code>membership.json</code> (protected by <code>.membership.lock</code>) and looks for unowned shards. It writes its ID (<code>hostname@pid</code>) into the registry and sets a <code>lease_expiry</code> 30 seconds into the future.</li>
+<li><strong>Heartbeat</strong>: Every 10 seconds, the daemon updates its lease in <code>membership.json</code>.</li>
+<li><strong>Takeover</strong>: If a daemon crashes (e.g., <code>SIGKILL</code> or OOM kill), it stops updating its lease. After the lease expires (plus a configurable clock skew margin), another daemon in the cluster will lazily detect the lapsed lease, update <code>membership.json</code> to claim the shard, and take over processing its backlog.</li>
 </ol>
-<p>This is <strong>backpressure</strong>, not rejection — tasks wait in the queue and execute as soon as capacity allows.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>rate_limit_group</code></td>
-<td>string</td>
-<td>Groups tasks for shared rate limiting (e.g., <code>"anthropic"</code>, <code>"sendgrid"</code>)</td>
-</tr>
-<tr>
-<td><code>max_per_minute</code></td>
-<td>int</td>
-<td>Maximum task executions per 60-second rolling window for this group</td>
-</tr>
-</tbody>
-</table>
-<h2 id="code-examples">Code Examples<a class="headerlink" href="#code-examples" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:7"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><input id="__tabbed_1_7" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Node.js</label><label for="__tabbed_1_2">Python</label><label for="__tabbed_1_3">Go</label><label for="__tabbed_1_4">Ruby</label><label for="__tabbed_1_5">PHP</label><label for="__tabbed_1_6">Java</label><label for="__tabbed_1_7">C# / .NET</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">enqueue</span><span class="p">({</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="sb">`llm-</span><span class="si">${</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;generate_response&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Explain quantum physics&#39;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nx">rateLimitGroup</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;anthropic&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nx">maxPerMinute</span><span class="o">:</span><span class="w"> </span><span class="kt">50</span><span class="p">,</span><span class="w">  </span><span class="c1">// Max 50 Anthropic API calls per minute</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">});</span>
+<h2 id="scaling-out-adding-shards">Scaling Out (Adding Shards)<a class="headerlink" href="#scaling-out-adding-shards" title="Permanent link">&para;</a></h2>
+<p>To increase throughput, you can expand a live queue's shard count using the CLI.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Add 2 more shards to an existing queue</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>snerdmq<span class="w"> </span>add-shards<span class="w"> </span><span class="m">2</span><span class="w"> </span>/path/to/.snerdata
 </code></pre></div>
+<p>This immediately creates <code>shard-X</code> directories and bumps the shard count in <code>membership.json</code>. Running daemons will immediately spot the free shards and claim them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Shard counts cannot decrease</p>
+<p>In v1, you can increase the shard count but you cannot decrease it. Live rebalancing is not supported.</p>
 </div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;llm-123&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;generate_response&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prompt&#39;</span><span class="p">:</span> <span class="s1">&#39;Explain quantum physics&#39;</span><span class="p">},</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">rate_limit_group</span><span class="o">=</span><span class="s1">&#39;anthropic&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">max_per_minute</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
-</code></pre></div>
+<h2 id="standby-mode">Standby Mode<a class="headerlink" href="#standby-mode" title="Permanent link">&para;</a></h2>
+<p>A daemon will claim shards up to its configured <code>max_local_shards</code> (default: 1). If a daemon boots and discovers that all shards in the cluster are already claimed by healthy peers, the daemon enters <strong>Standby Mode</strong>.</p>
+<p>In Standby Mode:
+- The daemon idles and polls <code>membership.json</code> every 10 seconds looking for lapsed leases.
+- Any attempt to enqueue a task on a standby daemon will immediately throw an error: <code>[Snerd] No shards owned by this instance</code>.</p>
+<h2 id="handling-shutdowns">Handling Shutdowns<a class="headerlink" href="#handling-shutdowns" title="Permanent link">&para;</a></h2>
+<p>When you send a <code>SIGINT</code> or <code>SIGTERM</code> to your application, the SDK gracefully shuts down the daemon:
+1. The daemon immediately stops accepting new enqueues.
+2. It waits for any in-flight jobs currently executing in your SDK to finish (up to <code>drain_timeout</code>, default 30s).
+3. It formally releases its claims in <code>membership.json</code>, allowing other daemons to instantly take over without waiting for the lease to expire.</p>
+<h3 id="at-least-once-delivery-guarantee">At-Least-Once Delivery Guarantee<a class="headerlink" href="#at-least-once-delivery-guarantee" title="Permanent link">&para;</a></h3>
+<p>If a daemon crashes ungracefully (e.g. <code>SIGKILL</code> or power failure) while a job is executing, that job is never marked as completed in the shard log.
+When another daemon takes over the crashed daemon's shard, <strong>it will re-execute the job</strong>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Idempotency Requirement</p>
+<p>SnerdMQ guarantees <strong>at-least-once</strong> delivery. You <strong>must</strong> design your job handlers to be idempotent. If a job is executed twice due to a crash-takeover event, it should not corrupt your database or charge a customer twice.</p>
 </div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">Enqueue</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span><span class="s">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Explain quantum physics&quot;</span><span class="p">},</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// rate_limit_group</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="mi">50</span><span class="p">,</span><span class="w">           </span><span class="c1">// max_per_minute</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
-</code></pre></div>
+<h2 id="embedded-sharding-snerd-rust-snerd-go">Embedded Sharding (snerd-rust &amp; snerd-go)<a class="headerlink" href="#embedded-sharding-snerd-rust-snerd-go" title="Permanent link">&para;</a></h2>
+<p>If you are using the raw embedded engines (<code>snerd-rust</code> or <code>snerd-go</code>) instead of the <code>snerdmq</code> IPC daemon, you can still leverage the exact same distributed coordination engine using <code>SnerdShardedQueue</code>.</p>
+<p>Embedded Sharding allows you to spin up multiple instances of your Go/Rust application on the same machine and have them automatically negotiate and partition the tasks among themselves. It uses the exact same <code>membership.json</code> and 2-phase <code>flock</code> algorithm used by the daemon.</p>
+<div class="admonition tip">
+<p class="admonition-title">Shared Worker Pools</p>
+<p>When you use <code>ShardedQueue</code> in the embedded SDKs, the engine guarantees that your <strong>Worker Pool Concurrency Limits</strong> are enforced process-wide. If you allocate a <code>default</code> pool of 100 workers and claim 10 shards, the engine will safely share those 100 workers dynamically across all 10 shards without exploding your thread/goroutine counts!</p>
 </div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="ss">task_id</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;llm-123&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="ss">task_type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;Explain quantum physics&quot;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="ss">rate_limit_group</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="ss">max_per_minute</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">$queue-&gt;enqueue(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    &quot;llm-123&quot;, &quot;generate_response&quot;,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">    [&quot;prompt&quot; =&gt; &quot;Explain quantum physics&quot;],</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">    3, 0.0,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">    &quot;anthropic&quot;,  // rate_limit_group</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">    50            // max_per_minute</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">);</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">queue</span><span class="p">.</span><span class="na">enqueue</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">&quot;{\&quot;prompt\&quot;:\&quot;Explain quantum physics\&quot;}&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// rateLimitGroup</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="mi">50</span><span class="p">,</span><span class="w">           </span><span class="c1">// maxPerMinute</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">);</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">await</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="n">Enqueue</span><span class="p">(</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">taskId</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">taskType</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">jsonData</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{\&quot;prompt\&quot;:\&quot;Explain quantum physics\&quot;}&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">maxRetries</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="n">retryAfterHours</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="n">rateLimitGroup</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">maxPerMinute</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">);</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="multiple-rate-limit-groups">Multiple Rate Limit Groups<a class="headerlink" href="#multiple-rate-limit-groups" title="Permanent link">&para;</a></h2>
-<p>You can define independent rate limit groups for different services:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Group: &quot;openai_api&quot;     → max 60/min
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Group: &quot;anthropic&quot;      → max 50/min
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Group: &quot;sendgrid&quot;       → max 100/min
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Group: &quot;db_writes&quot;      → max 200/min
-</code></pre></div>
-<p>Each group has its own independent rolling window. Tasks without a <code>rate_limit_group</code> execute immediately with no throttling.</p>
-<h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>LLM API calls</strong> — Prevent 429 errors when bursting GPT-4 or Claude requests</li>
-<li><strong>Email sending</strong> — Respect SendGrid/Mailgun rate limits</li>
-<li><strong>Database writes</strong> — Throttle bulk inserts to avoid connection pool exhaustion</li>
-<li><strong>Webhook dispatch</strong> — Stay within downstream webhook rate limits</li>
-<li><strong>Payment processing</strong> — Respect Stripe/PayPal API quotas</li>
-</ul>
 
 
 
