@@ -16,10 +16,13 @@ SnerdMQ can now scale horizontally across multiple instances while acting as a s
 - **Daemon Sharding:** Deploy multiple `snerdmq` daemons pointing to the same shared network directory (e.g., AWS EFS). They will automatically partition the workload using a robust `membership.json` lease and 2-phase OS flocking protocol.
 - **Embedded Sharding (`snerd-rust` & `snerd-go`):** You can now natively shard workloads directly within the raw embedded engines across multiple processes on the same machine, safely dividing tasks without network hops.
 
-**Example (CLI Sharding):**
-```bash
-# Provision 10 shards on a shared EFS mount for your replicas to claim
-snerdmq add-shards 10 /mnt/efs/snerd-queue
+**Example (Embedded Sharding in Rust):**
+```rust
+// Create a 10-shard queue safely embedded inside your Rust process
+let sharded_queue = SnerdShardedQueue::new("main", Path::new(".snerdata"), 10).await;
+
+// Enqueue jobs natively (tasks are instantly partitioned)
+sharded_queue.enqueue(task).await.unwrap();
 ```
 
 #### 2. Worker Pools (Resource Isolation)
