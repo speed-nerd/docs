@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://speed-nerd.github.io/docs/features/rate-limiting/">
+        <link rel="canonical" href="https://speed-nerd.github.io/docs/features/hard-timeouts/">
       
       
-        <link rel="prev" href="../retries-and-dlq/">
+        <link rel="prev" href="../job-chaining/">
       
       
-        <link rel="next" href="../cron-scheduling/">
+        <link rel="next" href="../../sdks/node/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Rate Limiting - SnerdMQ Documentation</title>
+        <title>Hard Timeouts - SnerdMQ Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rate-limiting" class="md-skip">
+        <a href="#hard-timeouts-cancellation" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Rate Limiting
+              Hard Timeouts
             
           </span>
         </div>
@@ -449,37 +449,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Rate Limiting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   
@@ -495,81 +468,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code Examples
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multiple-rate-limit-groups" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Rate Limit Groups
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Use Cases
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -747,10 +645,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../hard-timeouts/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hard Timeouts
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -766,6 +691,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it Matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-sdk-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language SDK Behavior
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Language SDK Behavior">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-asyncio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python / Asyncio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#go" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Go
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node.js
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1380,10 +1408,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How It Works
+        Overview
       
     </span>
   </a>
@@ -1391,10 +1419,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#why-it-matters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        Why it Matters
       
     </span>
   </a>
@@ -1402,32 +1430,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-examples" class="md-nav__link">
+  <a href="#language-sdk-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Code Examples
+        Language SDK Behavior
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Language SDK Behavior">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-asyncio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python / Asyncio
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#multiple-rate-limit-groups" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#go" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multiple Rate Limit Groups
+        Go
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Use Cases
+        Node.js
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
       
     </span>
   </a>
@@ -1454,134 +1510,50 @@
   
 
 
-<h1 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h1>
-<p>SnerdMQ includes a built-in token-bucket rate limiter that prevents your tasks from overwhelming third-party APIs. When you're bursting hundreds of LLM generation jobs, SnerdMQ automatically pauses dispatch to prevent 429 "Too Many Requests" errors.</p>
-<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
-<p>Rate limiting in SnerdMQ uses a <strong>rolling 60-second window</strong> per group:</p>
-<ol>
-<li>You assign tasks to a <code>rate_limit_group</code> (e.g., <code>"openai_api"</code>)</li>
-<li>You set a <code>max_per_minute</code> cap for that group</li>
-<li>The daemon tracks execution velocity for each group</li>
-<li>When the limit is hit, further tasks in that group are <strong>paused</strong> (not dropped)</li>
-<li>As the window slides and capacity frees up, paused tasks resume dispatching</li>
-</ol>
-<p>This is <strong>backpressure</strong>, not rejection — tasks wait in the queue and execute as soon as capacity allows.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>rate_limit_group</code></td>
-<td>string</td>
-<td>Groups tasks for shared rate limiting (e.g., <code>"anthropic"</code>, <code>"sendgrid"</code>)</td>
-</tr>
-<tr>
-<td><code>max_per_minute</code></td>
-<td>int</td>
-<td>Maximum task executions per 60-second rolling window for this group</td>
-</tr>
-</tbody>
-</table>
-<h2 id="code-examples">Code Examples<a class="headerlink" href="#code-examples" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:7"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><input id="__tabbed_1_7" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Node.js</label><label for="__tabbed_1_2">Python</label><label for="__tabbed_1_3">Go</label><label for="__tabbed_1_4">Ruby</label><label for="__tabbed_1_5">PHP</label><label for="__tabbed_1_6">Java</label><label for="__tabbed_1_7">C# / .NET</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">enqueue</span><span class="p">({</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="sb">`llm-</span><span class="si">${</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;generate_response&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Explain quantum physics&#39;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nx">rateLimitGroup</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;anthropic&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nx">maxPerMinute</span><span class="o">:</span><span class="w"> </span><span class="kt">50</span><span class="p">,</span><span class="w">  </span><span class="c1">// Max 50 Anthropic API calls per minute</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">});</span>
+<h1 id="hard-timeouts-cancellation">Hard Timeouts &amp; Cancellation<a class="headerlink" href="#hard-timeouts-cancellation" title="Permanent link">&para;</a></h1>
+<p>When writing background tasks, there is always a risk that a third-party dependency hangs indefinitely or a developer accidentally introduces an infinite <code>while</code> loop. Without intervention, these "zombie" tasks will consume a worker thread forever, eventually starving the entire worker pool.</p>
+<p>SnerdMQ solves this via <strong>Hard Timeouts &amp; Cancellation</strong>.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>You can add a <code>maxExecutionSeconds</code> parameter when enqueuing a task. </p>
+<p>If the task takes longer than this duration to execute:
+1. The SnerdMQ daemon forcefully terminates the worker's execution.
+2. The task is immediately marked as <strong>failed</strong>.
+3. If the task has remaining retries (<code>maxRetries</code>), it will follow normal backoff procedures and try again later. Otherwise, it will be sent to the Dead Letter Queue.</p>
+<h2 id="why-it-matters">Why it Matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
+<p>Protecting your background worker capacity is critical for production readiness. By enforcing hard upper limits on task duration, you prevent your application from grinding to a halt due to misbehaving API endpoints or inefficient code.</p>
+<h2 id="language-sdk-behavior">Language SDK Behavior<a class="headerlink" href="#language-sdk-behavior" title="Permanent link">&para;</a></h2>
+<p>Because different languages have different concurrency models, the way the SDK enforces the hard timeout locally varies slightly, but the Rust daemon always acts as the ultimate enforcer at the IPC level.</p>
+<h3 id="python-asyncio">Python / Asyncio<a class="headerlink" href="#python-asyncio" title="Permanent link">&para;</a></h3>
+<p>The Python SDK wraps your asynchronous handler in an <code>asyncio.wait_for</code>. If the timeout is reached, your handler is cancelled via an <code>asyncio.exceptions.TimeoutError</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;risky-task&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;process_data&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{},</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">max_execution_seconds</span><span class="o">=</span><span class="mi">300</span> <span class="c1"># Kill if running &gt; 5 mins</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;llm-123&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">task_type</span><span class="o">=</span><span class="s1">&#39;generate_response&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prompt&#39;</span><span class="p">:</span> <span class="s1">&#39;Explain quantum physics&#39;</span><span class="p">},</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">rate_limit_group</span><span class="o">=</span><span class="s1">&#39;anthropic&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">max_per_minute</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+<h3 id="go">Go<a class="headerlink" href="#go" title="Permanent link">&para;</a></h3>
+<p>In Go, the SDK passes a <code>context.Context</code> to your handler. When the timeout expires, the context is automatically cancelled (<code>ctx.Done()</code> is closed). It is your responsibility to respect the context in your Go code (e.g. <code>req.WithContext(ctx)</code>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nx">maxExec</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">300</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">Enqueue</span><span class="p">(</span><span class="nx">snerd</span><span class="p">.</span><span class="nx">RetryableTask</span><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nx">TaskId</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;risky-task&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nx">TaskType</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;process_data&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nx">TaskData</span><span class="p">:</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{},</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nx">MaxExecutionSeconds</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">maxExec</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">})</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">queue</span><span class="p">.</span><span class="nx">Enqueue</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span><span class="s">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Explain quantum physics&quot;</span><span class="p">},</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// rate_limit_group</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="mi">50</span><span class="p">,</span><span class="w">           </span><span class="c1">// max_per_minute</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+<h3 id="nodejs">Node.js<a class="headerlink" href="#nodejs" title="Permanent link">&para;</a></h3>
+<p>Because JavaScript runs in a single-threaded event loop, the Node.js SDK cannot forcefully preempt a synchronous infinite <code>while (true)</code> loop. However, for asynchronous operations (like HTTP requests or database calls), the SDK will throw a <code>TimeoutError</code> and immediately report the failure back to the daemon.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">queue</span><span class="p">.</span><span class="nx">enqueue</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="s1">&#39;risky-task&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;process_data&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="mf">300</span><span class="w"> </span><span class="c1">// max_execution_seconds</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">);</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="ss">task_id</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;llm-123&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="ss">task_type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;Explain quantum physics&quot;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="ss">rate_limit_group</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="ss">max_per_minute</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">$queue-&gt;enqueue(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    &quot;llm-123&quot;, &quot;generate_response&quot;,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">    [&quot;prompt&quot; =&gt; &quot;Explain quantum physics&quot;],</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">    3, 0.0,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">    &quot;anthropic&quot;,  // rate_limit_group</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">    50            // max_per_minute</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">);</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">queue</span><span class="p">.</span><span class="na">enqueue</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">&quot;{\&quot;prompt\&quot;:\&quot;Explain quantum physics\&quot;}&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// rateLimitGroup</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="mi">50</span><span class="p">,</span><span class="w">           </span><span class="c1">// maxPerMinute</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">);</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">await</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="n">Enqueue</span><span class="p">(</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">taskId</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llm-123&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">taskType</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;generate_response&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">jsonData</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{\&quot;prompt\&quot;:\&quot;Explain quantum physics\&quot;}&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">maxRetries</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="n">retryAfterHours</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="n">rateLimitGroup</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anthropic&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">maxPerMinute</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">);</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="multiple-rate-limit-groups">Multiple Rate Limit Groups<a class="headerlink" href="#multiple-rate-limit-groups" title="Permanent link">&para;</a></h2>
-<p>You can define independent rate limit groups for different services:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Group: &quot;openai_api&quot;     → max 60/min
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Group: &quot;anthropic&quot;      → max 50/min
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Group: &quot;sendgrid&quot;       → max 100/min
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Group: &quot;db_writes&quot;      → max 200/min
-</code></pre></div>
-<p>Each group has its own independent rolling window. Tasks without a <code>rate_limit_group</code> execute immediately with no throttling.</p>
-<h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>LLM API calls</strong> — Prevent 429 errors when bursting GPT-4 or Claude requests</li>
-<li><strong>Email sending</strong> — Respect SendGrid/Mailgun rate limits</li>
-<li><strong>Database writes</strong> — Throttle bulk inserts to avoid connection pool exhaustion</li>
-<li><strong>Webhook dispatch</strong> — Stay within downstream webhook rate limits</li>
-<li><strong>Payment processing</strong> — Respect Stripe/PayPal API quotas</li>
+<li><strong>Always set a timeout for network calls:</strong> If your background job makes HTTP requests, use <code>maxExecutionSeconds</code> as a global safeguard, even if your HTTP client has its own timeout logic.</li>
+<li><strong>Keep it generous:</strong> Hard timeouts should be a worst-case safety net. Set them to 3-5x the expected duration of the task to avoid flaking under temporary system load.</li>
 </ul>
 
 
@@ -1589,6 +1561,9 @@
 
 
 
+
+  
+  
 
 
 
