@@ -175,14 +175,18 @@ $queue = new SnerdQueue(null, 4); // max_local_shards
 
 // Enqueue an AI task to a dedicated pool
 $queue->enqueue(
-    'ai-gen-123', 'ai_generation', ['prompt' => 'A majestic horse'],
-    3, 0, null, null, null, null, null, null, null, null, 'ai-pool'
+    task_id: 'ai-gen-123', 
+    task_type: 'ai_generation', 
+    data: ['prompt' => 'A majestic horse'],
+    pool: 'ai-pool'
 );
 
 // Enqueue an email task to a fast, urgent pool
 $queue->enqueue(
-    'email-123', 'send_email', ['to' => 'user@example.com'],
-    3, 0, null, null, null, null, null, null, null, null, 'urgent'
+    task_id: 'email-123', 
+    task_type: 'send_email', 
+    data: ['to' => 'user@example.com'],
+    pool: 'urgent'
 );
 ```
 
@@ -191,18 +195,22 @@ $queue->enqueue(
 // Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
 
 // Step 1: Transcode
-$queue->enqueue('transcode-1', 'transcode_video', ['file' => 'raw.mp4']);
+$queue->enqueue(task_id: 'transcode-1', task_type: 'transcode_video', data: ['file' => 'raw.mp4']);
 
 // Step 2: Upload (Waits for Step 1)
 $queue->enqueue(
-    'upload-1', 'upload_s3', ['file' => 'processed.mp4'],
-    3, 0, null, null, null, null, null, null, null, null, null, ['transcode-1']
+    task_id: 'upload-1', 
+    task_type: 'upload_s3', 
+    data: ['file' => 'processed.mp4'],
+    trigger_after_ids: ['transcode-1']
 );
 
 // Step 3: Notify (Waits for Step 2)
 $queue->enqueue(
-    'notify-1', 'send_email', ['status' => 'done'],
-    3, 0, null, null, null, null, null, null, null, null, null, ['upload-1']
+    task_id: 'notify-1', 
+    task_type: 'send_email', 
+    data: ['status' => 'done'],
+    trigger_after_ids: ['upload-1']
 );
 ```
 
@@ -211,8 +219,10 @@ $queue->enqueue(
 // Context: A system needs to run a database cleanup script every night at midnight.
 
 $queue->enqueue(
-    'db-cleanup', 'cleanup_job', ['table' => 'sessions'],
-    3, 0, null, null, null, null, null, '0 0 * * *'
+    task_id: 'daily-digest', 
+    task_type: 'send_email', 
+    data: ['template' => 'daily'], 
+    cron: '0 8 * * *'
 );
 ```
 
@@ -221,8 +231,10 @@ $queue->enqueue(
 // Context: A background worker is making an HTTP request to a flaky third-party API that might hang indefinitely. We forcefully kill it if it runs over 5 minutes.
 
 $queue->enqueue(
-    'api-fetch-1', 'fetch_data', ['endpoint' => '/sync'],
-    3, 0, null, null, null, null, null, null, null, 300
+    task_id: 'api-fetch-1', 
+    task_type: 'fetch_data', 
+    data: ['endpoint' => '/sync'], 
+    max_execution_seconds: 300
 );
 ```
 
@@ -231,8 +243,10 @@ $queue->enqueue(
 // Context: A developer is using AWS Lambda or Vercel Serverless functions and wants SnerdMQ to trigger the function via an HTTP POST request rather than running a local worker.
 
 $queue->enqueue(
-    'serverless-job', 'resize_image', ['img' => 'cat.jpg'],
-    3, 0, null, null, null, null, null, null, 'https://api.example.com/webhook/snerdmq'
+    task_id: 'serverless-job', 
+    task_type: 'resize_image', 
+    data: ['img' => 'cat.jpg'], 
+    webhook_url: 'https://api.example.com/webhook/snerdmq'
 );
 ```
 
