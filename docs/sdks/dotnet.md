@@ -178,18 +178,30 @@ using var queue = new SnerdQueue(maxLocalShards: 4);
 
 // Enqueue an AI task to a dedicated pool
 await queue.Enqueue(
-    "ai-gen-123", 
-    "ai_generation", 
-    "{\"prompt\":\"A majestic horse\"}",
-    3, 0.0, null, null, null, null, null, null, null, null, "ai-pool", null
+    taskId: "ai-gen-123", 
+    taskType: "ai_generation", 
+    jsonData: "{\"prompt\":\"A majestic horse\"}",
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    pool: "ai-pool"
 );
 
 // Enqueue an email task to a fast, urgent pool
 await queue.Enqueue(
-    "email-123", 
-    "send_email", 
-    "{\"to\":\"user@example.com\"}",
-    3, 0.0, null, null, null, null, null, null, null, null, "urgent", null
+    taskId: "email-123", 
+    taskType: "send_email", 
+    jsonData: "{\"to\":\"user@example.com\"}",
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    pool: "urgent"
 );
 ```
 
@@ -198,22 +210,44 @@ await queue.Enqueue(
 // Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
 
 // Step 1: Transcode
-await queue.Enqueue("transcode-1", "transcode_video", "{\"file\":\"raw.mp4\"}", 3, 0.0, null, null, null, null, null, null, null, null, null, null);
+await queue.Enqueue(
+    taskId: "transcode-1", 
+    taskType: "transcode_video", 
+    jsonData: "{\"file\":\"raw.mp4\"}", 
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null
+);
 
 // Step 2: Upload (Waits for Step 1)
 await queue.Enqueue(
-    "upload-1", 
-    "upload_s3", 
-    "{\"file\":\"processed.mp4\"}",
-    3, 0.0, null, null, null, null, null, null, null, null, null, new List<string> { "transcode-1" }
+    taskId: "upload-1", 
+    taskType: "upload_s3", 
+    jsonData: "{\"file\":\"processed.mp4\"}",
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    triggerAfterIds: new List<string> { "transcode-1" }
 );
 
 // Step 3: Notify (Waits for Step 2)
 await queue.Enqueue(
-    "notify-1", 
-    "send_email", 
-    "{\"status\":\"done\"}",
-    3, 0.0, null, null, null, null, null, null, null, null, null, new List<string> { "upload-1" }
+    taskId: "notify-1", 
+    taskType: "send_email", 
+    jsonData: "{\"status\":\"done\"}",
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    triggerAfterIds: new List<string> { "upload-1" }
 );
 ```
 
@@ -222,10 +256,16 @@ await queue.Enqueue(
 // Context: A system needs to run a database cleanup script every night at midnight.
 
 await queue.Enqueue(
-    "db-cleanup", 
-    "cleanup_job", 
-    "{\"table\":\"sessions\"}",
-    3, 0.0, null, null, null, null, null, "0 0 * * *", null, null, null, null
+    taskId: "daily-digest", 
+    taskType: "send_email", 
+    jsonData: "{\"template\":\"daily\"}", 
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    cron: "0 8 * * *"
 );
 ```
 
@@ -234,10 +274,16 @@ await queue.Enqueue(
 // Context: A background worker is making an HTTP request to a flaky third-party API that might hang indefinitely. We forcefully kill it if it runs over 5 minutes.
 
 await queue.Enqueue(
-    "api-fetch-1", 
-    "fetch_data", 
-    "{\"endpoint\":\"/sync\"}",
-    3, 0.0, null, null, null, null, null, null, null, 300, null, null
+    taskId: "api-fetch-1", 
+    taskType: "fetch_data", 
+    jsonData: "{\"endpoint\":\"/sync\"}", 
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    maxExecutionSeconds: 300
 );
 ```
 
@@ -246,10 +292,16 @@ await queue.Enqueue(
 // Context: A developer is using AWS Lambda or Vercel Serverless functions and wants SnerdMQ to trigger the function via an HTTP POST request rather than running a local worker.
 
 await queue.Enqueue(
-    "serverless-job", 
-    "resize_image", 
-    "{\"img\":\"cat.jpg\"}",
-    3, 0.0, null, null, null, null, null, null, "https://api.example.com/webhook/snerdmq", null, null, null
+    taskId: "serverless-job", 
+    taskType: "resize_image", 
+    jsonData: "{\"img\":\"cat.jpg\"}", 
+    maxRetries: 3, 
+    retryAfterHours: 0.0, 
+    rateLimitGroup: null, 
+    maxPerMinute: null, 
+    autoDedupe: null, 
+    urgencyScore: null,
+    webhookUrl: "https://api.example.com/webhook/snerdmq"
 );
 ```
 
