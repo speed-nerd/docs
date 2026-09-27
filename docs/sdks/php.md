@@ -159,7 +159,7 @@ A shared network drive (AWS EFS or NFS) is still a good home for that storage wh
 
 ## Advanced Orchestration (v0.3.0 Features)
 
-SnerdMQ v0.3.0 introduced powerful new primitives for managing complex background jobs. Below are realistic, production-like scenarios showing how to utilize these features in PHP:
+SnerdMQ v0.3.0 introduced powerful new primitives for managing complex background jobs. Below are realistic, production-like scenarios showing how to utilize these features in Php:
 
 ```php
 // 1. Sharded Queues
@@ -176,13 +176,13 @@ $queue = new SnerdQueue(null, 4); // max_local_shards
 // Enqueue an AI task to a dedicated pool
 $queue->enqueue(
     'ai-gen-123', 'ai_generation', ['prompt' => 'A majestic horse'],
-    3, 0, null, null, 0, null, null, null, null, 'ai-pool'
+    3, 0, null, null, null, null, null, null, null, null, 'ai-pool'
 );
 
 // Enqueue an email task to a fast, urgent pool
 $queue->enqueue(
     'email-123', 'send_email', ['to' => 'user@example.com'],
-    3, 0, null, null, 0, null, null, null, null, 'urgent'
+    3, 0, null, null, null, null, null, null, null, null, 'urgent'
 );
 ```
 
@@ -196,13 +196,13 @@ $queue->enqueue('transcode-1', 'transcode_video', ['file' => 'raw.mp4']);
 // Step 2: Upload (Waits for Step 1)
 $queue->enqueue(
     'upload-1', 'upload_s3', ['file' => 'processed.mp4'],
-    3, 0, null, null, 0, null, null, null, ['transcode-1']
+    3, 0, null, null, null, null, null, null, null, null, null, ['transcode-1']
 );
 
 // Step 3: Notify (Waits for Step 2)
 $queue->enqueue(
     'notify-1', 'send_email', ['status' => 'done'],
-    3, 0, null, null, 0, null, null, null, ['upload-1']
+    3, 0, null, null, null, null, null, null, null, null, null, ['upload-1']
 );
 ```
 
@@ -212,7 +212,7 @@ $queue->enqueue(
 
 $queue->enqueue(
     'db-cleanup', 'cleanup_job', ['table' => 'sessions'],
-    3, 0, null, null, 0, '0 0 * * *'
+    3, 0, null, null, null, null, null, '0 0 * * *'
 );
 ```
 
@@ -222,7 +222,7 @@ $queue->enqueue(
 
 $queue->enqueue(
     'api-fetch-1', 'fetch_data', ['endpoint' => '/sync'],
-    3, 0, null, null, 0, null, null, 300
+    3, 0, null, null, null, null, null, null, null, 300
 );
 ```
 
@@ -232,7 +232,7 @@ $queue->enqueue(
 
 $queue->enqueue(
     'serverless-job', 'resize_image', ['img' => 'cat.jpg'],
-    3, 0, null, null, 0, null, 'https://api.example.com/webhook/snerdmq'
+    3, 0, null, null, null, null, null, null, 'https://api.example.com/webhook/snerdmq'
 );
 ```
 
@@ -241,7 +241,8 @@ $queue->enqueue(
 // Context: A task has failed its maximum number of retries (e.g., the SendGrid API is down for hours). The developer needs to catch this to alert the team on Slack.
 
 $queue->registerMaxRetryHandler('send_email', function($data) {
-    echo "Task permanently failed! Alerting Slack with data: " . json_encode($data) . "\n";
+    echo "Task permanently failed! Alerting Slack with data: " . json_encode($data) . "
+";
 });
 ```
 

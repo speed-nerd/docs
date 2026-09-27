@@ -166,7 +166,7 @@ A shared network drive (AWS EFS or NFS) is still a good home for that storage wh
 
 ## Advanced Orchestration (v0.3.0 Features)
 
-SnerdMQ v0.3.0 introduced powerful new primitives for managing complex background jobs. Below are realistic, production-like scenarios showing how to utilize these features in Node.js:
+SnerdMQ v0.3.0 introduced powerful new primitives for managing complex background jobs. Below are realistic, production-like scenarios showing how to utilize these features in Node:
 
 ```typescript
 // 1. Sharded Queues
@@ -181,10 +181,20 @@ const queue = new SnerdQueue({ maxLocalShards: 4 });
 // Context: A system has both slow AI generation tasks and fast transactional emails. We want to prevent AI tasks from starving the email workers.
 
 // Enqueue an AI task to a dedicated pool
-await queue.enqueue('ai-gen-123', 'ai_generation', { prompt: 'A majestic horse' }, 3, 0, null, null, 0, null, null, null, null, 'ai-pool');
+await queue.enqueue({
+    id: 'ai-gen-123',
+    type: 'ai_generation',
+    data: { prompt: 'A majestic horse' },
+    pool: 'ai-pool'
+});
 
 // Enqueue an email task to a fast, urgent pool
-await queue.enqueue('email-123', 'send_email', { to: 'user@example.com' }, 3, 0, null, null, 0, null, null, null, null, 'urgent');
+await queue.enqueue({
+    id: 'email-123',
+    type: 'send_email',
+    data: { to: 'user@example.com' },
+    pool: 'urgent'
+});
 ```
 
 ```typescript
@@ -192,34 +202,59 @@ await queue.enqueue('email-123', 'send_email', { to: 'user@example.com' }, 3, 0,
 // Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
 
 // Step 1: Transcode
-await queue.enqueue('transcode-1', 'transcode_video', { file: 'raw.mp4' });
+await queue.enqueue({ id: 'transcode-1', type: 'transcode_video', data: { file: 'raw.mp4' } });
 
 // Step 2: Upload (Waits for Step 1)
-await queue.enqueue('upload-1', 'upload_s3', { file: 'processed.mp4' }, 3, 0, null, null, 0, null, null, null, ['transcode-1']);
+await queue.enqueue({
+    id: 'upload-1',
+    type: 'upload_s3',
+    data: { file: 'processed.mp4' },
+    triggerAfterIds: ['transcode-1']
+});
 
 // Step 3: Notify (Waits for Step 2)
-await queue.enqueue('notify-1', 'send_email', { status: 'done' }, 3, 0, null, null, 0, null, null, null, ['upload-1']);
+await queue.enqueue({
+    id: 'notify-1',
+    type: 'send_email',
+    data: { status: 'done' },
+    triggerAfterIds: ['upload-1']
+});
 ```
 
 ```typescript
 // 4. Cron & Scheduled Jobs
 // Context: A system needs to run a database cleanup script every night at midnight.
 
-await queue.enqueue('db-cleanup', 'cleanup_job', { table: 'sessions' }, 3, 0, null, null, 0, '0 0 * * *');
+await queue.enqueue({
+    id: 'db-cleanup',
+    type: 'cleanup_job',
+    data: { table: 'sessions' },
+    cron: '0 0 * * *'
+});
 ```
 
 ```typescript
 // 5. Hard Timeouts
 // Context: A background worker is making an HTTP request to a flaky third-party API that might hang indefinitely. We forcefully kill it if it runs over 5 minutes.
 
-await queue.enqueue('api-fetch-1', 'fetch_data', { endpoint: '/sync' }, 3, 0, null, null, 0, null, null, 300);
+await queue.enqueue({
+    id: 'api-fetch-1',
+    type: 'fetch_data',
+    data: { endpoint: '/sync' },
+    maxExecutionSeconds: 300
+});
 ```
 
 ```typescript
 // 6. Webhook Callbacks
 // Context: A developer is using AWS Lambda or Vercel Serverless functions and wants SnerdMQ to trigger the function via an HTTP POST request rather than running a local worker.
 
-await queue.enqueue('serverless-job', 'resize_image', { img: 'cat.jpg' }, 3, 0, null, null, 0, null, 'https://api.example.com/webhook/snerdmq');
+await queue.enqueue({
+    id: 'serverless-job',
+    type: 'resize_image',
+    data: { img: 'cat.jpg' },
+    webhookUrl: 'https://api.example.com/webhook/snerdmq'
+});
 ```
 
 ```typescript

@@ -202,21 +202,11 @@ queue := snerd.NewQueue(snerd.QueueOptions{
 
 // Enqueue an AI task to a dedicated pool
 aiPool := "ai-pool"
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "ai-gen-123",
-    TaskType: "ai_generation",
-    TaskData: map[string]interface{}{"prompt": "A majestic horse"},
-    Pool: &aiPool,
-})
+queue.Enqueue("ai-gen-123", "ai_generation", map[string]interface{}{"prompt": "A majestic horse"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, nil, &aiPool, nil)
 
 // Enqueue an email task to a fast, urgent pool
 urgentPool := "urgent"
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "email-123",
-    TaskType: "send_email",
-    TaskData: map[string]interface{}{"to": "user@example.com"},
-    Pool: &urgentPool,
-})
+queue.Enqueue("email-123", "send_email", map[string]interface{}{"to": "user@example.com"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, nil, &urgentPool, nil)
 ```
 
 ```go
@@ -224,27 +214,13 @@ queue.Enqueue(snerd.RetryableTask{
 // Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
 
 // Step 1: Transcode
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "transcode-1",
-    TaskType: "transcode_video",
-    TaskData: map[string]interface{}{"file": "raw.mp4"},
-})
+queue.Enqueue("transcode-1", "transcode_video", map[string]interface{}{"file": "raw.mp4"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, nil, nil, nil)
 
 // Step 2: Upload (Waits for Step 1)
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "upload-1",
-    TaskType: "upload_s3",
-    TaskData: map[string]interface{}{"file": "processed.mp4"},
-    TriggerAfterIds: []string{"transcode-1"},
-})
+queue.Enqueue("upload-1", "upload_s3", map[string]interface{}{"file": "processed.mp4"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, nil, nil, []string{"transcode-1"})
 
 // Step 3: Notify (Waits for Step 2)
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "notify-1",
-    TaskType: "send_email",
-    TaskData: map[string]interface{}{"status": "done"},
-    TriggerAfterIds: []string{"upload-1"},
-})
+queue.Enqueue("notify-1", "send_email", map[string]interface{}{"status": "done"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, nil, nil, []string{"upload-1"})
 ```
 
 ```go
@@ -252,12 +228,7 @@ queue.Enqueue(snerd.RetryableTask{
 // Context: A system needs to run a database cleanup script every night at midnight.
 
 cronExpr := "0 0 * * *"
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "db-cleanup",
-    TaskType: "cleanup_job",
-    TaskData: map[string]interface{}{"table": "sessions"},
-    Cron: &cronExpr,
-})
+queue.Enqueue("db-cleanup", "cleanup_job", map[string]interface{}{"table": "sessions"}, 3, 0.0, "", 0, nil, nil, nil, &cronExpr, nil, nil, nil, nil)
 ```
 
 ```go
@@ -265,12 +236,7 @@ queue.Enqueue(snerd.RetryableTask{
 // Context: A background worker is making an HTTP request to a flaky third-party API that might hang indefinitely. We forcefully kill it if it runs over 5 minutes.
 
 maxExec := 300
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "api-fetch-1",
-    TaskType: "fetch_data",
-    TaskData: map[string]interface{}{"endpoint": "/sync"},
-    MaxExecutionSeconds: &maxExec,
-})
+queue.Enqueue("api-fetch-1", "fetch_data", map[string]interface{}{"endpoint": "/sync"}, 3, 0.0, "", 0, nil, nil, nil, nil, nil, &maxExec, nil, nil)
 ```
 
 ```go
@@ -278,12 +244,7 @@ queue.Enqueue(snerd.RetryableTask{
 // Context: A developer is using AWS Lambda or Vercel Serverless functions and wants SnerdMQ to trigger the function via an HTTP POST request rather than running a local worker.
 
 webhook := "https://api.example.com/webhook/snerdmq"
-queue.Enqueue(snerd.RetryableTask{
-    TaskId: "serverless-job",
-    TaskType: "resize_image",
-    TaskData: map[string]interface{}{"img": "cat.jpg"},
-    WebhookUrl: &webhook,
-})
+queue.Enqueue("serverless-job", "resize_image", map[string]interface{}{"img": "cat.jpg"}, 3, 0.0, "", 0, nil, nil, nil, nil, &webhook, nil, nil, nil)
 ```
 
 ```go
@@ -291,7 +252,8 @@ queue.Enqueue(snerd.RetryableTask{
 // Context: A task has failed its maximum number of retries (e.g., the SendGrid API is down for hours). The developer needs to catch this to alert the team on Slack.
 
 queue.RegisterMaxRetryHandler("send_email", func(data interface{}) {
-    fmt.Printf("Task permanently failed! Alerting Slack with data: %v\n", data)
+    fmt.Printf("Task permanently failed! Alerting Slack with data: %v
+", data)
 })
 ```
 

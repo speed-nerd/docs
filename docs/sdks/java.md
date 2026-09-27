@@ -190,13 +190,13 @@ SnerdQueue queue = new SnerdQueue(null, 4); // maxLocalShards
 // Enqueue an AI task to a dedicated pool
 queue.enqueue(
     "ai-gen-123", "ai_generation", "{ \"prompt\": \"A majestic horse\" }",
-    3, 0.0, null, null, 0.0, null, null, null, "ai-pool", null
+    3, 0.0, null, null, null, null, null, null, null, null, "ai-pool", null
 );
 
 // Enqueue an email task to a fast, urgent pool
 queue.enqueue(
     "email-123", "send_email", "{ \"to\": \"user@example.com\" }",
-    3, 0.0, null, null, 0.0, null, null, null, "urgent", null
+    3, 0.0, null, null, null, null, null, null, null, null, "urgent", null
 );
 ```
 
@@ -205,18 +205,18 @@ queue.enqueue(
 // Context: A video processing pipeline where a video must be transcoded, then uploaded to S3, and finally an email notification must be sent.
 
 // Step 1: Transcode
-queue.enqueue("transcode-1", "transcode_video", "{ \"file\": \"raw.mp4\" }");
+queue.enqueue("transcode-1", "transcode_video", "{ \"file\": \"raw.mp4\" }", 3, 0.0, null);
 
 // Step 2: Upload (Waits for Step 1)
 queue.enqueue(
     "upload-1", "upload_s3", "{ \"file\": \"processed.mp4\" }",
-    3, 0.0, null, null, 0.0, null, null, null, null, Arrays.asList("transcode-1")
+    3, 0.0, null, null, null, null, null, null, null, null, null, Arrays.asList("transcode-1")
 );
 
 // Step 3: Notify (Waits for Step 2)
 queue.enqueue(
     "notify-1", "send_email", "{ \"status\": \"done\" }",
-    3, 0.0, null, null, 0.0, null, null, null, null, Arrays.asList("upload-1")
+    3, 0.0, null, null, null, null, null, null, null, null, null, Arrays.asList("upload-1")
 );
 ```
 
@@ -226,7 +226,7 @@ queue.enqueue(
 
 queue.enqueue(
     "db-cleanup", "cleanup_job", "{ \"table\": \"sessions\" }",
-    3, 0.0, null, null, 0.0, "0 0 * * *", null, null, null, null
+    3, 0.0, null, null, null, null, null, "0 0 * * *", null, null, null, null
 );
 ```
 
@@ -236,7 +236,7 @@ queue.enqueue(
 
 queue.enqueue(
     "api-fetch-1", "fetch_data", "{ \"endpoint\": \"/sync\" }",
-    3, 0.0, null, null, 0.0, null, null, 300, null, null
+    3, 0.0, null, null, null, null, null, null, null, 300, null, null
 );
 ```
 
@@ -246,7 +246,7 @@ queue.enqueue(
 
 queue.enqueue(
     "serverless-job", "resize_image", "{ \"img\": \"cat.jpg\" }",
-    3, 0.0, null, null, 0.0, null, "https://api.example.com/webhook/snerdmq", null, null, null
+    3, 0.0, null, null, null, null, null, null, "https://api.example.com/webhook/snerdmq", null, null, null
 );
 ```
 
